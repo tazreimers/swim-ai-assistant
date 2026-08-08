@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-**Last Updated**: August 8, 2026 @ 11:33 AM
+**Last Updated**: August 8, 2026 @ 12:16 PM
 **Project**: Swim AI - AI-First Swimming Coaching Platform
 **Repository**: tazreimers/swim-ai-assistant
 
@@ -8,13 +8,13 @@
 
 ## 📊 Overall Progress
 
-**Phase 1 - Foundation: 2/6 Plans Complete (33%)**
+**Phase 1 - Foundation: 3/6 Plans Complete (50%)**
 
 | Plan | Status | Started | Completed | Duration |
 |------|--------|---------|-----------|----------|
 | Monorepo Setup | ✅ Complete | Aug 8 | Aug 8 | ~2h |
 | Docker Setup | ✅ Complete | Aug 8 | Aug 8 | ~1h |
-| Authentication Setup | ⏳ Pending | - | - | - |
+| Authentication Setup | ✅ Complete | Aug 8 | Aug 8 | ~1h |
 | Database Setup | ⏳ Pending | - | - | - |
 | Shared Packages | ⏳ Pending | - | - | - |
 | CI/CD Pipeline | ⏳ Pending | - | - | - |
@@ -31,10 +31,10 @@
 - Created 6 detailed sub-plans in `/plans` directory:
   - 01-monorepo-setup.md
   - 02-docker-setup.md
-  - 03-authentication-setup.md
-  - 04-database-setup.md
-  - 05-shared-packages.md
-  - 06-ci-cd-pipeline.md
+  - 04-authentication-setup.md
+  - 05-database-setup.md
+  - 06-shared-packages.md
+  - 03-ci-cd-pipeline.md
 - Created plans/README.md with overview and execution order
 - Established tech stack and architecture decisions
 
@@ -307,6 +307,43 @@ Changes: 11 files, 902 insertions(+)
 - ✅ Type checking validated
 - ✅ Bootstrap guide created
 
+### Phase 1, Plan 3: Authentication Setup
+**Status**: ✅ COMPLETE | **Started**: August 8 | **Completed**: August 8 | **Duration**: ~1 hour
+
+#### What Was Implemented
+- ✅ ClerkProvider and Clerk authentication middleware in the Next.js app
+- ✅ Public sign-in and sign-up routes using Clerk components
+- ✅ Authenticated dashboard route with user context
+- ✅ Functional Clerk sign-out flow
+- ✅ NestJS Clerk JWT guard using `@clerk/backend`
+- ✅ Protected `GET /user/me` endpoint
+- ✅ Public `GET /health` and `GET /user/health` endpoints
+- ✅ Typed authenticated request context
+- ✅ Clerk environment variables documented in existing environment templates
+
+#### Success Criteria Met
+- ✅ Sign-in and sign-up UI are wired to Clerk
+- ✅ Unauthenticated dashboard requests are redirected to sign-in
+- ✅ Authenticated users are routed to the dashboard
+- ✅ API bearer tokens are verified against Clerk signing configuration
+- ✅ Clerk user ID and supported JWT metadata are exposed to controllers
+- ✅ Session logout clears the Clerk session and routes to sign-in
+
+#### Files Created or Modified
+- `apps/web/middleware.ts`
+- `apps/web/app/sign-in/[[...sign-in]]/page.tsx`
+- `apps/web/app/sign-up/[[...sign-up]]/page.tsx`
+- `apps/web/app/dashboard/page.tsx`
+- `apps/web/app/layout.tsx`
+- `apps/web/app/page.tsx`
+- `apps/api/src/app.module.ts`
+- `apps/api/src/main.ts`
+- `apps/api/src/common/guards/auth.guard.ts`
+- `apps/api/src/common/types/authenticated-request.ts`
+- `apps/api/src/user/user.controller.ts`
+- `apps/api/src/user/user.module.ts`
+- `apps/api/package.json`
+
 ---
 
 ## 📂 Project Structure (Current State)
@@ -354,10 +391,10 @@ swim-ai-assistant/
 │   ├── README.md
 │   ├── 01-monorepo-setup.md
 │   ├── 02-docker-setup.md
-│   ├── 03-authentication-setup.md
-│   ├── 04-database-setup.md
-│   ├── 05-shared-packages.md
-│   └── 06-ci-cd-pipeline.md
+│   ├── 04-authentication-setup.md
+│   ├── 05-database-setup.md
+│   ├── 06-shared-packages.md
+│   └── 03-ci-cd-pipeline.md
 ├── node_modules/               # Root turbo only
 ├── docker-compose.yml          # Service orchestration
 ├── .dockerignore
@@ -384,15 +421,12 @@ Python dependencies installed: 24 packages in virtual environment
 
 ## 🎯 What's Next
 
-### Plan 3: Authentication Setup (⏳ PENDING)
+### Plan 3: Authentication Setup (✅ COMPLETE)
 - Clerk integration in Next.js frontend
 - JWT verification in NestJS backend
 - Protected API routes
 - User context propagation
 - Clerk configuration and testing
-
-**Estimated Duration**: 4-5 hours
-**Estimated Start**: After Plan 2 completion confirmation
 
 ### Plan 4: Database Setup (⏳ PENDING)
 - PostgreSQL configuration
@@ -469,6 +503,12 @@ Python dependencies installed: 24 packages in virtual environment
 - [x] Volume mounts for development
 - [x] Documentation comprehensive
 
+### Authentication
+- [x] Clerk provider and route middleware configured
+- [x] Sign-in, sign-up, dashboard, and logout flows created
+- [x] API JWT guard and authenticated request type created
+- [x] Protected user endpoint created
+
 ### Documentation
 - [x] README.md complete
 - [x] BOOTSTRAP.md comprehensive
@@ -492,12 +532,10 @@ Python dependencies installed: 24 packages in virtual environment
 
 ## 📝 Notes for Future Progress
 
-### For Next Phase (Plan 3)
-- Require Clerk account setup before starting
-- Will need Clerk API keys in environment
-- Frontend will require NextAuth or similar setup
-- Backend will need JWT middleware
-- Consider setting up dev environment for Clerk testing
+### For Authentication Usage
+- Require Clerk account setup before running the interactive flow
+- Add Clerk API keys to the environment
+- API clients must send `Authorization: Bearer <Clerk session token>`
 
 ### For Database Phase (Plan 4)
 - Ensure PostgreSQL is installed locally or Docker is running
@@ -521,6 +559,6 @@ Python dependencies installed: 24 packages in virtual environment
 
 ---
 
-**Status**: ✅ Foundation Phase 2/6 Complete - Ready for Plan 3
-**Next Action**: Implement Plan 3: Authentication Setup
+**Status**: ✅ Foundation Phase 3/6 Complete - Ready for database setup
+**Next Action**: Implement the database setup plan
 **Estimated Time to Next Milestone**: 4-5 hours

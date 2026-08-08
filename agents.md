@@ -6,15 +6,15 @@ This document provides guidance for AI agents working on the Swim AI project, in
 
 **Project**: Swim AI - AI-First Swimming Coaching Platform
 **Repository**: tazreimers/swim-ai-assistant
-**Current Phase**: Phase 1 - Foundation (2/6 Plans Complete)
-**Last Updated**: August 8, 2026 @ 11:33 AM
+**Current Phase**: Phase 1 - Foundation (3/6 Plans Complete)
+**Last Updated**: August 8, 2026 @ 12:16 PM
 
 ### Quick Stats
-- ✅ Plans Completed: 2/6 (Monorepo, Docker)
+- ✅ Plans Completed: 3/6 (Monorepo, Docker, Authentication)
 - ✅ Commits Made: 2
 - ✅ Files Created: 50+
 - ✅ Dependencies Installed: 932 npm + 24 python
-- 📊 Estimated Phase 1 Progress: ~33%
+- 📊 Estimated Phase 1 Progress: ~50%
 
 ---
 
@@ -90,23 +90,32 @@ swim-ai-assistant/
 - `package-lock.json` files in each app
 - `apps/ai/venv/` exists and functional
 
+### Phase 1, Plan 3: Authentication Setup (✅ COMPLETE)
+- ClerkProvider and public sign-in/sign-up pages in Next.js
+- Clerk route middleware protects authenticated pages
+- Dashboard displays authenticated Clerk user data
+- Dashboard sign-out clears the session and routes to sign-in
+- NestJS verifies Clerk bearer JWTs with `@clerk/backend`
+- Protected `GET /user/me` endpoint exposes authenticated user context
+- Public health endpoints are available for service checks
+
+**Verification**: API and web TypeScript checks pass ✓
+
 ---
 
-## ⏳ Next Priority (Plan 3)
+## ⏳ Next Priority (Plan 4)
 
-### Plan 3: Authentication Setup
+### Plan 4: Database Setup
 
-**Location**: `plans/03-authentication-setup.md`
+**Location**: `plans/04-database-setup.md`
 
-**Objective**: Implement secure authentication using Clerk across frontend and backend
+**Objective**: Implement PostgreSQL and Prisma database infrastructure
 
 **Scope**:
-- Clerk integration in Next.js app (middleware, hooks, UI components)
-- Clerk JWT verification in NestJS API
-- Protected API routes using guard middleware
-- User context propagation from frontend to backend
-- Session management and logout
-- Role/permission foundation for future use
+- PostgreSQL and Prisma configuration
+- Initial schema and migrations
+- Database seed data
+- API database integration
 
 **Estimated Duration**: 4-5 hours
 
@@ -114,30 +123,26 @@ swim-ai-assistant/
 - ✓ Monorepo setup complete
 - ✓ Docker configured (optional but recommended)
 - ✓ Dependencies installed
-- ⚠️ **REQUIRED**: Clerk account with API keys
 
 **Step-by-Step**:
-1. Sign up for Clerk account at clerk.com
-2. Create Clerk application and get keys
-3. Add keys to .env.local
-4. Implement Next.js middleware and components
-5. Implement NestJS JWT verification
-6. Test authentication flow
-7. Document in project
+1. Define the Prisma schema
+2. Configure database environment variables
+3. Create and apply the initial migration
+4. Add seed data and database service wiring
+5. Test database connectivity
+6. Document in project
 
 **Success Criteria**:
-- User can sign up via Clerk UI
-- Logged in users see dashboard
-- Unauthenticated users redirect to login
-- API verifies JWT on protected endpoints
-- User ID available in API context
-- Session persists across page reloads
+- API connects to PostgreSQL
+- Initial migrations apply successfully
+- Seed data can be loaded repeatably
+- Database access is available through NestJS
+- Environment configuration is documented
 
 **Deliverables Expected**:
-- Clerk integration in @swim/web
-- JWT middleware in @swim/api
-- Protected example endpoint
-- TypeScript types for authenticated requests
+- Prisma schema and migration
+- Database module and service
+- Seed script
 - Environment configuration
 - Documentation
 
@@ -186,10 +191,10 @@ swim-ai-assistant/
 ### Implementation Plans
 - `plans/01-monorepo-setup.md` - ✅ Complete
 - `plans/02-docker-setup.md` - ✅ Complete
-- `plans/03-authentication-setup.md` - ⏳ Next
-- `plans/04-database-setup.md` - ⏳ Future
-- `plans/05-shared-packages.md` - ⏳ Future
-- `plans/06-ci-cd-pipeline.md` - ⏳ Future
+- `plans/04-authentication-setup.md` - ✅ Complete
+- `plans/05-database-setup.md` - ⏳ Future
+- `plans/06-shared-packages.md` - ⏳ Future
+- `plans/03-ci-cd-pipeline.md` - ⏳ Future
 
 ### Source Code Structure
 - `apps/web/src/` - Next.js frontend code
@@ -201,16 +206,16 @@ swim-ai-assistant/
 
 ## 🚀 How to Continue
 
-### To Work on Plan 3 (Authentication)
+### To Work on Plan 4 (Database)
 
 ```bash
 # 1. Read the plan document
-cat plans/03-authentication-setup.md
+cat plans/05-database-setup.md
 
 # 2. Update progress when starting
-# Edit plans/PROGRESS.md - mark Plan 3 as "In Progress"
+# Edit plans/PROGRESS.md - mark the database plan as "In Progress"
 
-# 3. Implement authentication
+# 3. Implement the database setup
 # Follow the deliverables in the plan
 
 # 4. Test the implementation
@@ -221,16 +226,16 @@ cd apps/api && npm run build
 
 # 5. Commit your work
 git add -A
-git commit -m "Implement Plan 3: Authentication Setup
+git commit -m "Implement database setup
 
-- Clerk integration details
+- Prisma and PostgreSQL integration
 - What you implemented
 - What works
 
 Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
 
 # 6. Update progress file
-# Edit plans/PROGRESS.md - mark Plan 3 as "Complete"
+# Edit plans/PROGRESS.md - mark the database plan as "Complete"
 ```
 
 ### To Update Progress
@@ -356,14 +361,7 @@ Changes: X files, Y insertions(+)
 
 **None identified** ✅
 
-All prerequisites for Plan 3 are in place:
-- Monorepo setup complete
-- Dependencies installed
-- Docker configured
-- All type checking passing
-- Documentation comprehensive
-
-Proceed to Plan 3: Authentication Setup when ready.
+Plan 3 authentication infrastructure is complete. Clerk account keys are still required in local environment files to run the interactive sign-in flow.
 
 ---
 
@@ -411,9 +409,9 @@ docker-compose logs -f
 
 ## 📝 Last Update
 
-**Date**: August 8, 2026 @ 11:33 AM
-**By**: Initial Setup + Plans 1 & 2 + Bootstrap
-**Next**: Plan 3 - Authentication Setup
+**Date**: August 8, 2026 @ 12:16 PM
+**By**: Initial Setup + Plans 1, 2 & 3 + Bootstrap
+**Next**: Plan 4 - Database Setup
 **Status**: Ready to proceed ✅
 
 ---
