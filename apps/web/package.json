@@ -15,7 +15,7 @@
     "react-dom": "^18.2.0",
     "next": "^14.0.0",
     "@clerk/nextjs": "^4.29.0",
-    "@swim/shared": "workspace:*",
+    "@swim/shared": "file:../../packages/shared",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.2.0"
   },

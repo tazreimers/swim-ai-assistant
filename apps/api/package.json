@@ -27,7 +27,7 @@
     "@nestjs/jwt": "^11.0.0",
     "@clerk/backend": "^0.32.0",
     "@prisma/client": "^5.3.0",
-    "@swim/shared": "workspace:*",
+    "@swim/shared": "file:../../packages/shared",
     "class-transformer": "^0.5.0",
     "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.0",
