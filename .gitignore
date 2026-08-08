@@ -4,11 +4,38 @@ dist
 .env
 .env.local
 coverage
+build
 
+# Turbo
+.turbo
+turbo-*.json
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# System
 .DS_Store
-
-prisma/dev.db
-
 .vscode
 .idea
+
+# Database
+prisma/dev.db
+.sqlite
+
+# Dependencies
+pnpm-lock.yaml
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+.venv
+venv/
+ENV/
+
+# Build artifacts
+.tsbuildinfo

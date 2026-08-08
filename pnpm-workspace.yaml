@@ -1,0 +1,10 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+public-hoist-pattern:
+  - '*react*'
+  - '*next*'
+  - 'type-*'
+
+shamefully-hoist: false

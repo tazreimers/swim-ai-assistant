@@ -1,4 +1,25 @@
 {
-  "name":"swim-ai",
-  "private":true
+  "name": "swim-ai",
+  "private": true,
+  "description": "AI-first swimming coaching platform",
+  "version": "0.1.0",
+  "packageManager": "pnpm@8.0.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "db:migrate": "turbo run db:migrate --scope=@swim/api",
+    "db:seed": "turbo run db:seed --scope=@swim/api",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "install-turbo": "npm install -g turbo"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.16"
+  }
 }
