@@ -15,6 +15,8 @@
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
     "db:migrate": "turbo run db:migrate --scope=@swim/api",
+    "db:migrate:dev": "turbo run db:migrate:dev --scope=@swim/api",
+    "db:reset": "turbo run db:reset --scope=@swim/api",
     "db:seed": "turbo run db:seed --scope=@swim/api",
     "clean": "turbo run clean && rm -rf node_modules",
     "install-turbo": "npm install -g turbo"

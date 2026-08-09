@@ -1,4 +1,5 @@
 import { Controller, Get, Module } from '@nestjs/common';
+import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 
 @Controller()
@@ -10,7 +11,7 @@ class HealthController {
 }
 
 @Module({
-  imports: [UserModule],
+  imports: [PrismaModule, UserModule],
   controllers: [HealthController],
   providers: [],
 })

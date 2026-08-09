@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SessionStatus {
+  PENDING
+  COMPLETED
+  MISSED
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  clerkId   String   @unique
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  coach     Coach?
+  athlete   Athlete?
+}
+
+model Coach {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @unique @db.Uuid
+  bio            String?
+  specialization String?
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  teams          Team[]
+  athletes       Athlete[]
+  workouts       Workout[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Athlete {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @unique @db.Uuid
+  coachId        String    @db.Uuid
+  teamId         String?   @db.Uuid
+  ageGroup       String?
+  primaryStrokes String[]  @default([])
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  coach          Coach     @relation(fields: [coachId], references: [id], onDelete: Restrict)
+  team           Team?     @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  sessions       Session[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([coachId])
+  @@index([teamId])
+}
+
+model Team {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String
+  coachId     String    @db.Uuid
+  description String?
+  coach       Coach     @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  athletes    Athlete[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([coachId])
+}
+
+model Workout {
+  id          String       @id @default(uuid()) @db.Uuid
+  title       String
+  description String?
+  coachId     String       @db.Uuid
+  isTemplate  Boolean      @default(false)
+  templateId  String?      @db.Uuid
+  coach       Coach        @relation(fields: [coachId], references: [id], onDelete: Cascade)
+  template    Workout?     @relation("WorkoutTemplates", fields: [templateId], references: [id], onDelete: SetNull)
+  variations  Workout[]    @relation("WorkoutTemplates")
+  sets        WorkoutSet[]
+  sessions    Session[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([coachId])
+  @@index([templateId])
+}
+
+model WorkoutSet {
+  id        String  @id @default(uuid()) @db.Uuid
+  workoutId String  @db.Uuid
+  position  Int
+  reps      Int
+  distance  Int?
+  time      Int?
+  stroke    String?
+  pace      String?
+  notes     String?
+  workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+
+  @@unique([workoutId, position])
+}
+
+model Session {
+  id            String        @id @default(uuid()) @db.Uuid
+  workoutId     String        @db.Uuid
+  athleteId     String        @db.Uuid
+  scheduledDate DateTime
+  completedDate DateTime?
+  status        SessionStatus @default(PENDING)
+  notes         String?
+  workout       Workout       @relation(fields: [workoutId], references: [id], onDelete: Restrict)
+  athlete       Athlete       @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([athleteId, scheduledDate])
+  @@index([workoutId])
+}

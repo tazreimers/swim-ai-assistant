@@ -7,7 +7,7 @@ This document provides guidance for AI agents working on the Swim AI project, in
 **Project**: Swim AI - AI-First Swimming Coaching Platform
 **Repository**: tazreimers/swim-ai-assistant
 **Current Phase**: Phase 1 - Foundation (3/6 Plans Complete)
-**Last Updated**: August 8, 2026 @ 12:16 PM
+**Last Updated**: August 9, 2026 @ 10:10 AM
 
 ### Quick Stats
 - ✅ Plans Completed: 3/6 (Monorepo, Docker, Authentication)
@@ -107,7 +107,7 @@ swim-ai-assistant/
 
 ### Plan 4: Database Setup
 
-**Location**: `plans/04-database-setup.md`
+**Location**: `plans/05-database-setup.md`
 
 **Objective**: Implement PostgreSQL and Prisma database infrastructure
 
@@ -151,9 +151,17 @@ swim-ai-assistant/
 ## 🔄 Remaining Plans (Phase 1)
 
 ### Plan 4: Database Setup
-**Status**: ⏳ Pending
+**Status**: 🚧 In Progress
 **Duration**: 4-5 hours
 **Focus**: PostgreSQL, Prisma ORM, migrations, seeding
+
+**Completed so far**:
+- Prisma schema and initial migration generated
+- NestJS Prisma service/module wired
+- Repeatable seed script added
+- Database documentation added
+
+**Blocked validation**: Docker/PostgreSQL is not currently running, so migration deployment and seeding still need to be run.
 
 ### Plan 5: Shared Packages (May overlap with others)
 **Status**: ⏳ Pending
