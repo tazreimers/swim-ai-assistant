@@ -28,6 +28,14 @@
       "cache": false,
       "outputs": []
     },
+    "db:migrate:dev": {
+      "cache": false,
+      "outputs": []
+    },
+    "db:reset": {
+      "cache": false,
+      "outputs": []
+    },
     "db:seed": {
       "cache": false,
       "outputs": []

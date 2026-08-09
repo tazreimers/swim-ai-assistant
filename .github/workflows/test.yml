@@ -1,0 +1,62 @@
+name: Test
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, type-check, and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Cache npm downloads
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('apps/api/package-lock.json', 'apps/web/package-lock.json', 'packages/shared/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install shared package dependencies
+        run: npm ci --prefix packages/shared
+
+      - name: Install API dependencies
+        run: npm ci --prefix apps/api
+
+      - name: Install web dependencies
+        run: npm ci --prefix apps/web
+
+      - name: Build shared package
+        run: npm run build --prefix packages/shared
+
+      - name: Lint API
+        run: npm run lint --prefix apps/api
+
+      - name: Lint web
+        run: npm run lint --prefix apps/web
+
+      - name: Type-check shared package
+        run: npm run type-check --prefix packages/shared
+
+      - name: Type-check API
+        run: npm run type-check --prefix apps/api
+
+      - name: Type-check web
+        run: npm run type-check --prefix apps/web
+
+      - name: Run API tests
+        run: npm test --prefix apps/api -- --runInBand --passWithNoTests

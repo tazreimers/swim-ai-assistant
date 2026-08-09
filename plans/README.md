@@ -16,25 +16,25 @@ Configure Docker for all services to enable consistent local and production envi
 - **Estimated time**: 3-4 hours
 - **Dependencies**: Monorepo Setup
 
-### 3. [Authentication Setup](./03-authentication-setup.md)
+### 3. [Authentication Setup](./04-authentication-setup.md)
 Implement Clerk authentication across frontend and backend for secure user access.
 - **Priority**: CRITICAL
 - **Estimated time**: 4-5 hours
 - **Dependencies**: Monorepo Setup, Docker Setup
 
-### 4. [Database Setup](./04-database-setup.md)
+### 4. [Database Setup](./05-database-setup.md)
 Set up PostgreSQL with Prisma ORM and MVP schema for data persistence.
 - **Priority**: CRITICAL
 - **Estimated time**: 4-5 hours
 - **Dependencies**: Monorepo Setup, Docker Setup
 
-### 5. [Shared Packages](./05-shared-packages.md)
+### 5. [Shared Packages](./06-shared-packages.md)
 Create shared TypeScript packages for types and utilities across frontend and backend.
 - **Priority**: HIGH
 - **Estimated time**: 2-3 hours
 - **Dependencies**: Monorepo Setup
 
-### 6. [CI/CD Pipeline](./06-ci-cd-pipeline.md)
+### 6. [CI/CD Pipeline](./03-ci-cd-pipeline.md)
 Automate testing, building, and deployment with GitHub Actions.
 - **Priority**: HIGH
 - **Estimated time**: 3-4 hours
