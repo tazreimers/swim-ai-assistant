@@ -3,26 +3,38 @@
   "version": "0.1.0",
   "private": true,
   "description": "Shared types, schemas, and utilities for Swim AI platform",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
     },
     "./types": {
-      "types": "./dist/types/index.d.ts"
+      "types": "./dist/types/types/index.d.ts"
     },
     "./schemas": {
-      "import": "./dist/schemas/index.js",
-      "require": "./dist/schemas/index.js",
-      "types": "./dist/schemas/index.d.ts"
+      "types": "./dist/types/schemas/index.d.ts",
+      "import": "./dist/esm/schemas/index.js",
+      "require": "./dist/cjs/schemas/index.js"
+    },
+    "./constants": {
+      "types": "./dist/types/constants/index.d.ts",
+      "import": "./dist/esm/constants/index.js",
+      "require": "./dist/cjs/constants/index.js"
+    },
+    "./utils": {
+      "types": "./dist/types/utils/index.d.ts",
+      "import": "./dist/esm/utils/index.js",
+      "require": "./dist/cjs/utils/index.js"
     }
   },
   "scripts": {
-    "build": "tsc",
-    "type-check": "tsc --noEmit",
+    "build": "npm run clean && tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json && node scripts/write-build-metadata.cjs",
+    "type-check": "tsc -p tsconfig.json --noEmit",
     "clean": "rm -rf dist"
   },
   "dependencies": {

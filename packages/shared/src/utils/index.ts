@@ -39,10 +39,26 @@ export function formatDistance(meters: number, unit: 'm' | 'y' = 'm'): string {
 
 // Pace utilities (assumes meters and seconds)
 export function calculatePace(distanceMeters: number, timeSeconds: number): string {
+  if (distanceMeters <= 0 || timeSeconds < 0) {
+    throw new RangeError('Distance must be greater than zero and time cannot be negative');
+  }
+
   const pace100m = (timeSeconds / distanceMeters) * 100;
   const minutes = Math.floor(pace100m / 60);
   const seconds = Math.round(pace100m % 60);
   return `${minutes}:${seconds.toString().padStart(2, '0')} / 100m`;
+}
+
+export function calculateTotalDistance(
+  sets: Array<{ reps: number; distance?: number }>,
+): number {
+  return sets.reduce((total, set) => {
+    if (set.reps < 0 || (set.distance !== undefined && set.distance < 0)) {
+      throw new RangeError('Workout repetitions and distance cannot be negative');
+    }
+
+    return total + set.reps * (set.distance ?? 0);
+  }, 0);
 }
 
 // Time utilities

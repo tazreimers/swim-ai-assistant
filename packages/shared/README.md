@@ -34,19 +34,27 @@ import { SWIM_STROKES, POOL_SIZES } from '@swim/shared/constants';
 
 ### Use utilities
 ```typescript
-import { formatDate, calculateDistance } from '@swim/shared/utils';
+import { formatDate, calculateTotalDistance } from '@swim/shared/utils';
 ```
+
+The package exposes both ESM and CommonJS builds:
+
+- `@swim/shared` - all public exports
+- `@swim/shared/types` - type declarations
+- `@swim/shared/schemas` - Zod schemas
+- `@swim/shared/constants` - domain constants
+- `@swim/shared/utils` - pure utility functions
 
 ## Adding New Exports
 
 1. Create your type/schema/constant in the appropriate directory
 2. Re-export from `src/index.ts`
 3. Update this README with usage examples
-4. Run `pnpm build` to generate dist/ files
+4. Run `npm run build` to generate ESM, CommonJS, and declaration output
 
 ## Dependencies
 
-- **zod** - Runtime type validation (no external dependencies)
+- **zod** - Runtime type validation
 - **typescript** - Type definitions and compilation
 
 ## Build

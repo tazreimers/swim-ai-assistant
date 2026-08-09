@@ -1,4 +1,5 @@
-// Export all types (from schemas which are more accurate)
+// Export domain types from the schemas so runtime validation and static types
+// remain defined by the same source.
 export type {
   User,
   Coach,
@@ -7,7 +8,13 @@ export type {
   Workout,
   WorkoutSet,
   Session,
-} from './schemas';
+} from './schemas/index.js';
+export type {
+  ApiResponse,
+  ApiError,
+  PaginationParams,
+  PaginationMeta,
+} from './types/index.js';
 
 // Export all schemas
 export {
@@ -22,10 +29,14 @@ export {
   apiErrorSchema,
   dateSchema,
   idSchema,
-} from './schemas';
+  swimStrokeSchema,
+  sessionStatusSchema,
+  ageGroupSchema,
+  paginationParamsSchema,
+} from './schemas/index.js';
 
 // Export all constants
-export * from './constants';
+export * from './constants/index.js';
 
 // Export all utilities
-export * from './utils';
+export * from './utils/index.js';

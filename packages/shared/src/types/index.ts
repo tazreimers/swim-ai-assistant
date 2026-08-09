@@ -1,73 +1,16 @@
-// Core domain types for Swim AI platform
+export type {
+  User,
+  Coach,
+  Athlete,
+  Team,
+  Workout,
+  WorkoutSet,
+  Session,
+} from '../schemas';
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface Coach extends User {
-  bio?: string;
-  specialization?: string;
-}
-
-export interface Athlete extends User {
-  coachId: string;
-  teamId?: string;
-  ageGroup?: string;
-  primaryStrokes?: string[];
-}
-
-export interface Team {
-  id: string;
-  name: string;
-  coachId: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface Workout {
-  id: string;
-  title: string;
-  description?: string;
-  coachId: string;
-  isTemplate: boolean;
-  templateId?: string;
-  sets: WorkoutSet[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface WorkoutSet {
-  id: string;
-  order: number;
-  reps: number;
-  distance?: number;
-  time?: number;
-  stroke?: string;
-  pace?: string;
-  notes?: string;
-}
-
-export interface Session {
-  id: string;
-  workoutId: string;
-  athleteId: string;
-  scheduledDate: Date;
-  completedDate?: Date;
-  status: 'pending' | 'completed' | 'missed';
-  notes?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-// API Response types
 export interface ApiResponse<T> {
   data: T;
-  error?: null;
+  error?: null | undefined;
 }
 
 export interface ApiError {
@@ -77,4 +20,16 @@ export interface ApiError {
     statusCode: number;
   };
   data?: null;
+}
+
+export interface PaginationParams {
+  page?: number;
+  pageSize?: number;
+}
+
+export interface PaginationMeta {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
 }

@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "outDir": "./dist/esm",
+    "declarationDir": "./dist/types",
+    "rootDir": "./src"
+  }
+}
