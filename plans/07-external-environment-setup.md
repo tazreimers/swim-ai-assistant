@@ -1,5 +1,9 @@
 # External Environment and Release Setup
 
+> **Deferred:** Current development uses Docker and local PostgreSQL. Do not
+> configure Railway or Vercel yet. Resume this plan when a Docker-capable
+> environment and hosted deployment credentials are available.
+
 ## Objective
 
 Complete the repository configuration and external service setup required to
@@ -29,27 +33,33 @@ verify the database and CI/CD plans in real environments.
 
 1. Copy the environment template to the local environment file.
 2. Confirm `DATABASE_URL` points to the Docker PostgreSQL service.
-3. Start PostgreSQL:
+3. Run the repository-side prerequisite check:
+
+   ```bash
+   npm run verify:environment
+   ```
+
+4. Start PostgreSQL:
 
    ```bash
    docker compose up -d postgres
    ```
 
-4. Apply migrations and seed development data:
+5. Apply migrations and seed development data:
 
    ```bash
    npm run db:migrate
    npm run db:seed
    ```
 
-5. Verify the data with Prisma Studio:
+6. Verify the data with Prisma Studio:
 
    ```bash
    cd apps/api
    npx prisma studio
    ```
 
-6. Record the migration and seed commands as passing in
+7. Record the migration and seed commands as passing in
    `plans/PROGRESS.md`.
 
 ## Step 2: Configure GitHub Actions
@@ -78,7 +88,7 @@ verify the database and CI/CD plans in real environments.
    publishing them.
 8. Push to `main` and verify images are published to GHCR with the commit SHA.
 
-## Step 3: Configure Railway
+## Step 3: Configure Railway (deferred)
 
 1. Create a Railway project with PostgreSQL, API, and AI services.
 2. Configure the API service to use `apps/api/Dockerfile`.
@@ -101,7 +111,7 @@ verify the database and CI/CD plans in real environments.
    production traffic.
 9. Configure Railway backups and test a restore into a non-production database.
 
-## Step 4: Configure Vercel
+## Step 4: Configure Vercel (deferred)
 
 1. Create or link a Vercel project to `apps/web`.
 2. Configure the build command as `npm run build`.
@@ -115,7 +125,7 @@ verify the database and CI/CD plans in real environments.
 5. Configure preview and production domains.
 6. Deploy a preview and verify sign-in, sign-up, dashboard routing, and logout.
 
-## Step 5: Configure Clerk
+## Step 5: Configure Clerk production settings (deferred)
 
 1. Configure the development instance for local and preview environments.
 2. Configure the production instance for production.
@@ -125,7 +135,7 @@ verify the database and CI/CD plans in real environments.
 6. Keep Clerk secret keys only in local ignored files and hosted environment
    settings.
 
-## Step 6: Release verification
+## Step 6: Release verification (deferred)
 
 Verify all of the following:
 

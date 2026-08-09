@@ -2,6 +2,16 @@
 
 The CI/CD workflows live in `.github/workflows`.
 
+Run the repository-side prerequisite check with:
+
+```bash
+npm run verify:environment
+```
+
+This checks local environment-file names, workflow presence, and Docker daemon
+availability without printing secret values. It cannot verify hosted account
+settings or GitHub repository permissions.
+
 ## Workflow behavior
 
 - `test.yml` runs on pull requests and pushes to `main` or `develop`.
@@ -20,9 +30,22 @@ Configure these repository or environment secrets before using deployment:
 - `VERCEL_PROJECT_ID`
 - `VERCEL_TOKEN`
 
-Configure Clerk, database, and service secrets in the Railway and Vercel
+Railway and Vercel deployment configuration is retained for later use but is
+not required for current local development. Configure hosted secrets in their
 environment settings rather than committing them to the repository.
 
 Enable branch protection on `main` and require the `Test / Lint, type-check,
 and test` check before merging. Add required reviewers to the `production`
 GitHub environment to enable the manual approval gate.
+
+## Deferred external setup
+
+These actions require account or repository-owner access and are intentionally
+deferred while development uses Docker locally:
+
+- Start Docker Desktop and run the local PostgreSQL migration and seed commands.
+- Create GitHub environments, secrets, package permissions, and branch rules.
+- Create Railway services, add production variables, configure backups, and
+  verify deployments.
+- Create the Vercel project, domains, variables, and preview deployment.
+- Configure Clerk domains, redirect URLs, and production credentials.

@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-**Last Updated**: August 9, 2026 @ 11:21 AM
+**Last Updated**: August 9, 2026 @ 3:54 PM
 **Project**: Swim AI - AI-First Swimming Coaching Platform
 **Repository**: tazreimers/swim-ai-assistant
 
@@ -18,7 +18,7 @@
 | Database Setup | 🚧 In Progress | Aug 9 | - | - |
 | Shared Packages | ✅ Complete | Aug 9 | Aug 9 | ~1h |
 | CI/CD Pipeline | 🚧 Configured | Aug 9 | - | - |
-| External Environment Setup | ⏳ Pending | - | - | - |
+| External Environment Setup | ⏸ Deferred | - | - | - |
 
 ---
 
@@ -453,14 +453,34 @@ Changes: 11 files, 902 insertions(+)
 - `turbo.json`
 
 ### Phase 1, Plan 7: External Environment and Release Setup
-**Status**: ⏳ PENDING
+**Status**: ⏸ DEFERRED
 
-This plan tracks work that cannot be completed through repository changes alone:
+This plan tracks work that cannot be completed through repository changes alone
+and is intentionally deferred for now:
 local PostgreSQL verification, GitHub settings and secrets, GHCR permissions,
 Railway services and backups, Vercel configuration, Clerk domains, and
 end-to-end release verification.
 
 **Location**: `plans/07-external-environment-setup.md`
+
+#### Repository-side work completed
+- ✅ Added `npm run verify:environment`
+- ✅ Added explicit external configuration handoff documentation
+- ✅ Confirmed required workflow files exist
+- ✅ Confirmed local Clerk and database environment files contain the expected
+  variable names without exposing values
+
+#### Current decision
+- ✅ Local development is configured to use Docker PostgreSQL at `localhost:5432`
+- ⏸ Hosted Railway/Vercel deployment is deferred
+- ⏸ GitHub environment secrets and production branch protection are deferred
+- ⏸ PostgreSQL migration and seed execution will resume when Docker is available
+
+#### Files Created or Modified
+- `scripts/verify-environment.mjs`
+- `package.json`
+- `DEPLOYMENT.md`
+- `plans/07-external-environment-setup.md`
 
 ---
 
@@ -689,6 +709,6 @@ Python dependencies installed: 24 packages in virtual environment
 
 ---
 
-**Status**: 🚧 Foundation 4/7 complete; external environment setup remains
-**Next Action**: Execute `plans/07-external-environment-setup.md`
+**Status**: 🚧 Foundation 4/7 complete; external deployment work is deferred
+**Next Action**: Continue local feature development using Docker when available
 **Estimated Time to Next Milestone**: 30-60 minutes plus external service configuration

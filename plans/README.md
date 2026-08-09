@@ -47,6 +47,43 @@ to verify the infrastructure plans in real environments.
 - **Estimated time**: 2-4 hours, depending on account setup
 - **Dependencies**: Database Setup, Authentication Setup, CI/CD Pipeline
 
+## Phase 2: MVP Product Features
+
+### 8. [Frontend Design System and Supabase Authentication](./08-frontend-design-system-auth.md)
+Migrate the frontend from Clerk/Tailwind to Supabase Auth and MUI, with a
+professional pastel blue/green design system and role-aware application shell.
+- **Priority**: CRITICAL
+- **Estimated time**: 5-7 hours
+- **Dependencies**: Plans 01, 04, 05, 06, and external Supabase setup
+
+### 9. [Clubs, Users, Invitations, and Squads](./09-clubs-squads.md)
+Implement club membership, invitations, role permissions, and squad
+management for coaches and athletes.
+- **Priority**: CRITICAL
+- **Estimated time**: 6-8 hours
+- **Dependencies**: Plan 08
+
+### 10. [Training Sessions and Athlete Logging](./10-sessions-and-athlete-logging.md)
+Implement coach session authoring, whiteboard uploads, publishing, and fast
+athlete rep-time logging.
+- **Priority**: CRITICAL
+- **Estimated time**: 8-10 hours
+- **Dependencies**: Plan 09
+
+### 11. [Results, Progress Tracking, and Dashboards](./11-progress-and-dashboards.md)
+Implement performance calculations, session history, progress graphs,
+attendance, and role-specific dashboards.
+- **Priority**: HIGH
+- **Estimated time**: 6-8 hours
+- **Dependencies**: Plan 10
+
+### 12. [AI Insights and MVP Validation](./12-ai-insights-and-mvp-validation.md)
+Implement structured session, athlete, and coach insights plus reliability,
+observability, and pilot validation.
+- **Priority**: CRITICAL
+- **Estimated time**: 8-12 hours
+- **Dependencies**: Plans 10 and 11, OpenAI and Supabase external setup
+
 ## How to Use These Plans
 
 1. Read a plan thoroughly to understand the scope and success criteria
@@ -65,14 +102,21 @@ Monorepo Setup (01)
              └─→ Database Setup (04)
                   └─→ CI/CD Pipeline (06)
                        └─→ External Environment and Release Setup (07)
+                            └─→ Frontend Design System and Supabase Authentication (08)
+                                 └─→ Clubs, Users, Invitations, and Squads (09)
+                                      └─→ Training Sessions and Athlete Logging (10)
+                                           └─→ Results, Progress Tracking, and Dashboards (11)
+                                                └─→ AI Insights and MVP Validation (12)
 ```
 
-**Estimated Total Time**: 20-28 hours including external configuration
+**Estimated Foundation Time**: 20-28 hours including external configuration
+
+**Estimated MVP Feature Time**: 33-45 hours excluding pilot operations
 
 ## Next Steps After Phase 1
 
 Once these infrastructure plans are complete:
 1. Next phase focuses on core coaching features (athletes, teams, workouts)
 2. Build API endpoints using the authenticated, typed, dockerized infrastructure
-3. Build frontend UI using Next.js + Tailwind + shadcn/ui
+3. Build frontend UI using Next.js + React + MUI
 4. Use CI/CD pipeline to safely deploy changes

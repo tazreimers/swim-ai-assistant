@@ -30,7 +30,9 @@ npm run db:reset
 ```
 
 The API loads `apps/api/.env` when started directly. Docker Compose supplies
-`DATABASE_URL` to the API container from the root `.env` file.
+`DATABASE_URL` to the API container from the root `.env` file. Local
+development intentionally uses `localhost:5432`; hosted database setup is
+deferred until Docker is available.
 
 ## Prisma workflow
 
@@ -51,7 +53,7 @@ npm run db:migrate
 Prisma Client is exposed through the global `PrismaService` in
 `apps/api/src/prisma`.
 
-## Railway production notes
+## Future hosted database notes
 
 Use Railway's private PostgreSQL connection string as `DATABASE_URL` and keep
 it out of source control. Production deploys should run `prisma migrate deploy`

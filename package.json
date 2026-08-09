@@ -18,6 +18,7 @@
     "db:migrate:dev": "turbo run db:migrate:dev --scope=@swim/api",
     "db:reset": "turbo run db:reset --scope=@swim/api",
     "db:seed": "turbo run db:seed --scope=@swim/api",
+    "verify:environment": "node scripts/verify-environment.mjs",
     "clean": "turbo run clean && rm -rf node_modules",
     "install-turbo": "npm install -g turbo"
   },
