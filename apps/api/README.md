@@ -51,6 +51,8 @@ API runs on `http://localhost:3001` in development.
 
 - User authentication via Supabase Auth
 - JWT token verification on protected routes
+- Club creation, invitations, and membership permissions
+- Squad creation and athlete membership management
 - CRUD operations for core entities
 - Database migrations and seeding
 - Error handling and validation
@@ -94,6 +96,12 @@ Opens browser UI to view and edit database data.
 Core endpoints are protected by Supabase Auth JWT authentication:
 
 - `POST /auth/user` - Get current user
+- `POST /clubs` - Create a club
+- `GET /clubs` - List the current user's clubs
+- `POST /clubs/:clubId/invitations` - Create a coach or athlete invitation
+- `POST /invitations/:token/accept` - Accept a club invitation
+- `POST /clubs/:clubId/squads` - Create a squad
+- `POST /squads/:squadId/members` - Add a club athlete to a squad
 - `GET /athletes` - List athletes
 - `POST /athletes` - Create athlete
 - `GET /teams` - List teams

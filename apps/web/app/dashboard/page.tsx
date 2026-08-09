@@ -10,6 +10,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import NextLink from 'next/link';
 import { useEffect, useState } from 'react';
 import { AppShell } from '../../src/components/layout/app-shell';
 import { createSupabaseBrowserClient } from '../../src/lib/supabase/client';
@@ -86,12 +87,12 @@ export default function DashboardPage() {
 
         <Grid container spacing={2}>
           {[
-            ['Clubs and squads', 'Organize your swimming community.'],
+            ['Clubs and squads', 'Organize your swimming community.', '/clubs'],
             ['Training sessions', 'Plan and publish the work that matters.'],
             ['Progress insights', 'See the patterns behind every rep.'],
-          ].map(([title, description]) => (
+          ].map(([title, description, href]) => (
             <Grid item xs={12} md={4} key={title}>
-              <Card sx={{ height: '100%' }}>
+              <Card sx={{ height: '100%' }} component={href ? NextLink : 'div'} href={href}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     {title}

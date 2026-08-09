@@ -13,15 +13,123 @@ enum SessionStatus {
   MISSED
 }
 
+enum ClubRole {
+  OWNER
+  COACH
+  ATHLETE
+}
+
+enum MembershipStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum ClubStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
+}
+
 model User {
+  id                  String            @id @default(uuid()) @db.Uuid
+  authId              String            @unique
+  email               String            @unique
+  name                String
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  coach               Coach?
+  athlete             Athlete?
+  ownedClubs          Club[]            @relation("ClubOwner")
+  clubMemberships     ClubMembership[]
+  sentInvitations     Invitation[]      @relation("InvitationSender")
+  acceptedInvitations Invitation[]      @relation("InvitationAccepter")
+  squadMemberships    SquadMembership[]
+}
+
+model Club {
+  id          String           @id @default(uuid()) @db.Uuid
+  name        String
+  ownerId     String           @db.Uuid
+  status      ClubStatus       @default(ACTIVE)
+  owner       User             @relation("ClubOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  memberships ClubMembership[]
+  invitations Invitation[]
+  squads      Squad[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([ownerId])
+  @@index([status])
+}
+
+model ClubMembership {
+  id        String           @id @default(uuid()) @db.Uuid
+  clubId    String           @db.Uuid
+  userId    String           @db.Uuid
+  role      ClubRole
+  status    MembershipStatus @default(ACTIVE)
+  club      Club             @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@unique([clubId, userId])
+  @@index([userId, status])
+  @@index([clubId, role, status])
+}
+
+model Invitation {
+  id           String           @id @default(uuid()) @db.Uuid
+  clubId       String           @db.Uuid
+  email        String
+  role         ClubRole
+  tokenHash    String           @unique
+  status       InvitationStatus @default(PENDING)
+  expiresAt    DateTime
+  invitedById  String           @db.Uuid
+  acceptedById String?          @db.Uuid
+  club         Club             @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  invitedBy    User             @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Restrict)
+  acceptedBy   User?            @relation("InvitationAccepter", fields: [acceptedById], references: [id], onDelete: SetNull)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@index([clubId, status])
+  @@index([email, status])
+  @@index([expiresAt])
+}
+
+model Squad {
+  id          String            @id @default(uuid()) @db.Uuid
+  clubId      String            @db.Uuid
+  name        String
+  description String?
+  isActive    Boolean           @default(true)
+  club        Club              @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  memberships SquadMembership[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([clubId, name])
+  @@index([clubId, isActive])
+}
+
+model SquadMembership {
   id        String   @id @default(uuid()) @db.Uuid
-  clerkId   String   @unique
-  email     String   @unique
-  name      String
+  squadId   String   @db.Uuid
+  userId    String   @db.Uuid
+  squad     Squad    @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  coach     Coach?
-  athlete   Athlete?
+
+  @@unique([squadId, userId])
+  @@index([userId])
 }
 
 model Coach {

@@ -4,10 +4,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   const coachUser = await prisma.user.upsert({
-    where: { clerkId: 'seed_coach_clerk_id' },
+    where: { authId: 'seed_coach_auth_id' },
     update: {},
     create: {
-      clerkId: 'seed_coach_clerk_id',
+      authId: 'seed_coach_auth_id',
       email: 'coach@swim-ai.local',
       name: 'Alex Morgan',
       coach: {
@@ -35,10 +35,10 @@ async function main() {
   });
 
   const athleteUser = await prisma.user.upsert({
-    where: { clerkId: 'seed_athlete_clerk_id' },
+    where: { authId: 'seed_athlete_auth_id' },
     update: {},
     create: {
-      clerkId: 'seed_athlete_clerk_id',
+      authId: 'seed_athlete_auth_id',
       email: 'athlete@swim-ai.local',
       name: 'Taylor Reed',
       athlete: {
@@ -51,6 +51,64 @@ async function main() {
       },
     },
     include: { athlete: true },
+  });
+
+  const club = await prisma.club.upsert({
+    where: { id: '00000000-0000-0000-0000-000000000004' },
+    update: {},
+    create: {
+      id: '00000000-0000-0000-0000-000000000004',
+      name: 'Swim AI Development Club',
+      ownerId: coachUser.id,
+    },
+  });
+
+  await prisma.clubMembership.upsert({
+    where: {
+      clubId_userId: { clubId: club.id, userId: coachUser.id },
+    },
+    update: {},
+    create: {
+      clubId: club.id,
+      userId: coachUser.id,
+      role: 'OWNER',
+    },
+  });
+
+  await prisma.clubMembership.upsert({
+    where: {
+      clubId_userId: { clubId: club.id, userId: athleteUser.id },
+    },
+    update: {},
+    create: {
+      clubId: club.id,
+      userId: athleteUser.id,
+      role: 'ATHLETE',
+    },
+  });
+
+  const squad = await prisma.squad.upsert({
+    where: {
+      id: '00000000-0000-0000-0000-000000000005',
+    },
+    update: {},
+    create: {
+      id: '00000000-0000-0000-0000-000000000005',
+      clubId: club.id,
+      name: 'Development Squad',
+      description: 'Sample squad for local development.',
+    },
+  });
+
+  await prisma.squadMembership.upsert({
+    where: {
+      squadId_userId: { squadId: squad.id, userId: athleteUser.id },
+    },
+    update: {},
+    create: {
+      squadId: squad.id,
+      userId: athleteUser.id,
+    },
   });
 
   const workout = await prisma.workout.upsert({

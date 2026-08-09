@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-**Last Updated**: August 9, 2026 @ 4:41 PM
+**Last Updated**: August 9, 2026 @ 5:00 PM
 **Project**: Swim AI - AI-First Swimming Coaching Platform
 **Repository**: tazreimers/swim-ai-assistant
 
@@ -686,6 +686,24 @@ Python dependencies installed: 24 packages in virtual environment
 - ✅ API type-check, lint, and production build pass
 - ⚠️ Supabase account configuration and live auth flow remain external setup
 
+### Phase 2, Plan 09: Clubs, Users, Invitations, and Squads
+**Status**: ✅ COMPLETE | **Completed**: August 9, 2026
+
+#### What Was Implemented
+- ✅ Added club, membership, invitation, squad, and squad membership schema
+- ✅ Added migration with Supabase identity terminology and tenant indexes
+- ✅ Added authenticated, role-scoped NestJS club and squad endpoints
+- ✅ Added hashed, expiring, single-use invitation acceptance
+- ✅ Added onboarding, club overview, member, invitation, squad, and acceptance pages
+- ✅ Added MUI navigation and API client contracts for club workflows
+- ✅ Enabled global DTO validation and updated API documentation
+
+#### Validation
+- ✅ Prisma schema validation and client generation pass
+- ✅ Web type-check, lint, and production build pass
+- ✅ API type-check, lint, and production build pass
+- ⚠️ Database migration execution remains blocked until PostgreSQL is available
+
 ---
 
 ## 🔗 Related Documents
@@ -726,5 +744,5 @@ Python dependencies installed: 24 packages in virtual environment
 ---
 
 **Status**: 🚧 Foundation 4/7 complete; Phase 2 Plan 08 complete
-**Next Action**: Implement Plan 09 for clubs, invitations, and squads
+**Next Action**: Implement Plan 10 for training sessions and athlete logging
 **Estimated Time to Next Milestone**: 30-60 minutes plus external service configuration
