@@ -40,6 +40,13 @@ Automate testing, building, and deployment with GitHub Actions.
 - **Estimated time**: 3-4 hours
 - **Dependencies**: Monorepo Setup, Docker Setup, Database Setup, Authentication Setup
 
+### 7. [External Environment and Release Setup](./07-external-environment-setup.md)
+Complete the GitHub, PostgreSQL, Railway, Vercel, and Clerk configuration needed
+to verify the infrastructure plans in real environments.
+- **Priority**: CRITICAL for release
+- **Estimated time**: 2-4 hours, depending on account setup
+- **Dependencies**: Database Setup, Authentication Setup, CI/CD Pipeline
+
 ## How to Use These Plans
 
 1. Read a plan thoroughly to understand the scope and success criteria
@@ -57,9 +64,10 @@ Monorepo Setup (01)
     └─→ Authentication Setup (03)
              └─→ Database Setup (04)
                   └─→ CI/CD Pipeline (06)
+                       └─→ External Environment and Release Setup (07)
 ```
 
-**Estimated Total Time**: 18-24 hours of development
+**Estimated Total Time**: 20-28 hours including external configuration
 
 ## Next Steps After Phase 1
 

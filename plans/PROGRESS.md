@@ -1,6 +1,6 @@
 # Project Progress Tracker
 
-**Last Updated**: August 9, 2026 @ 11:11 AM
+**Last Updated**: August 9, 2026 @ 11:21 AM
 **Project**: Swim AI - AI-First Swimming Coaching Platform
 **Repository**: tazreimers/swim-ai-assistant
 
@@ -8,7 +8,7 @@
 
 ## 📊 Overall Progress
 
-**Phase 1 - Foundation: 4/6 Plans Complete (67%)**
+**Phase 1 - Foundation: 4/7 Plans Complete (57%)**
 
 | Plan | Status | Started | Completed | Duration |
 |------|--------|---------|-----------|----------|
@@ -18,6 +18,7 @@
 | Database Setup | 🚧 In Progress | Aug 9 | - | - |
 | Shared Packages | ✅ Complete | Aug 9 | Aug 9 | ~1h |
 | CI/CD Pipeline | 🚧 Configured | Aug 9 | - | - |
+| External Environment Setup | ⏳ Pending | - | - | - |
 
 ---
 
@@ -451,6 +452,16 @@ Changes: 11 files, 902 insertions(+)
 - `plans/README.md`
 - `turbo.json`
 
+### Phase 1, Plan 7: External Environment and Release Setup
+**Status**: ⏳ PENDING
+
+This plan tracks work that cannot be completed through repository changes alone:
+local PostgreSQL verification, GitHub settings and secrets, GHCR permissions,
+Railway services and backups, Vercel configuration, Clerk domains, and
+end-to-end release verification.
+
+**Location**: `plans/07-external-environment-setup.md`
+
 ---
 
 ## 📂 Project Structure (Current State)
@@ -552,6 +563,16 @@ Python dependencies installed: 24 packages in virtual environment
 - Deployment automation
 
 **Estimated Duration**: 3-4 hours
+
+### Plan 7: External Environment and Release Setup (⏳ PENDING)
+- GitHub Actions permissions, secrets, environments, and branch protection
+- Local PostgreSQL migration and seed verification
+- Railway service, database, backup, and health-check configuration
+- Vercel project and environment configuration
+- Clerk domains, redirects, and production settings
+- End-to-end release verification
+
+**Estimated Duration**: 2-4 hours
 
 ---
 
@@ -668,6 +689,6 @@ Python dependencies installed: 24 packages in virtual environment
 
 ---
 
-**Status**: 🚧 Foundation 4/6 complete; database and external CI/CD configuration remain
-**Next Action**: Start PostgreSQL, apply the migration, seed the database, and configure GitHub/Railway/Vercel settings
+**Status**: 🚧 Foundation 4/7 complete; external environment setup remains
+**Next Action**: Execute `plans/07-external-environment-setup.md`
 **Estimated Time to Next Milestone**: 30-60 minutes plus external service configuration
