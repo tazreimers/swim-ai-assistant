@@ -24,7 +24,8 @@ settings or GitHub repository permissions.
 
 Configure these repository or environment secrets before using deployment:
 
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `RAILWAY_TOKEN`
 - `VERCEL_ORG_ID`
 - `VERCEL_PROJECT_ID`
@@ -48,4 +49,4 @@ deferred while development uses Docker locally:
 - Create Railway services, add production variables, configure backups, and
   verify deployments.
 - Create the Vercel project, domains, variables, and preview deployment.
-- Configure Clerk domains, redirect URLs, and production credentials.
+- Configure Supabase Auth redirect URLs, email settings, and production credentials.

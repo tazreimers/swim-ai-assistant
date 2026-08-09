@@ -1,6 +1,13 @@
-import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { Providers } from '../src/components/providers';
 import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Swim AI - Coaching Platform',
@@ -13,10 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={inter.variable}>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }

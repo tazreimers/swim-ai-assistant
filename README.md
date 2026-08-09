@@ -85,8 +85,8 @@ pnpm prisma studio
 
 ### Apps
 
-- **@swim/web** - Next.js frontend with Clerk auth, Tailwind CSS, shadcn/ui
-- **@swim/api** - NestJS REST API with Prisma ORM, PostgreSQL, Clerk JWT verification
+- **@swim/web** - Next.js frontend with Supabase Auth and MUI
+- **@swim/api** - NestJS REST API with Prisma ORM, PostgreSQL, and Supabase token verification
 - **@swim/ai** - FastAPI microservice for AI-powered workout generation and coaching
 
 ### Packages
@@ -123,9 +123,9 @@ Copy `.env.example` to `.env.local` and configure:
 # Database
 DATABASE_URL=postgresql://user:password@localhost:5432/swim_db
 
-# Authentication (Clerk)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=...
-CLERK_SECRET_KEY=...
+# Authentication (Supabase)
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 
 # API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:3001
@@ -164,17 +164,16 @@ See [`plans/README.md`](./plans/README.md) for detailed Phase 1 infrastructure p
 ### Frontend
 - **React 18** - UI library
 - **Next.js 14** - Framework (App Router)
-- **Tailwind CSS** - Styling
-- **shadcn/ui** - Component library
+- **MUI** - Component library and styling
 - **TypeScript** - Type safety
-- **Clerk** - Authentication
+- **Supabase Auth** - Authentication
 
 ### Backend
 - **NestJS 10** - Framework
 - **Prisma** - ORM
 - **PostgreSQL** - Database
 - **TypeScript** - Type safety
-- **Clerk** - JWT verification
+- **Supabase Auth** - Token verification
 
 ### AI
 - **FastAPI** - Web framework

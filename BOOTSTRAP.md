@@ -32,7 +32,7 @@
 
 - ✅ Root dependencies installed
 - ✅ @swim/shared built with TypeScript
-- ✅ @swim/web with 180+ npm packages (Next.js, React, Tailwind, Clerk)
+- ✅ @swim/web with Next.js, React, MUI, and Supabase Auth
 - ✅ @swim/api with 750+ npm packages (NestJS, Prisma, TypeScript)
 - ✅ @swim/ai Python venv created with FastAPI, Uvicorn, Pydantic
 
@@ -57,8 +57,8 @@ nano .env.local
 
 Required variables:
 - `DATABASE_URL` - PostgreSQL connection string
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` - Clerk frontend key
-- `CLERK_SECRET_KEY` - Clerk backend key
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase browser/API key
 
 ### 2. Set Up Database (Plan 4)
 
@@ -99,7 +99,7 @@ turbo run dev --parallel
 ### 4. Next Development Phases
 
 1. **Plan 2**: Docker Setup - Complete `/plans/02-docker-setup.md`
-2. **Plan 3**: Authentication - Integrate Clerk (Requires frontend running)
+2. **Plan 08**: Frontend and authentication - Configure Supabase Auth (Requires project settings)
 3. **Plan 4**: Database - Set up PostgreSQL and Prisma migrations
 4. **Plan 5**: CI/CD - Configure GitHub Actions
 
@@ -206,9 +206,9 @@ See `.env.example` for all available options:
 # Database
 DATABASE_URL=postgresql://swimuser:swimpass@localhost:5432/swim_db
 
-# Clerk Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
+# Supabase Authentication
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 # API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:3001

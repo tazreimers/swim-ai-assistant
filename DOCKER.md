@@ -17,7 +17,7 @@ All services run on a shared Docker network and can communicate via service host
 - Docker 20.10+ with Compose V2
 - Docker Desktop (Mac/Windows) or Docker + Docker Compose (Linux)
 - At least 4GB RAM available for Docker
-- Clerk credentials (API keys from clerk.com)
+- Supabase project credentials (URL and anon key from supabase.com)
 
 ## Quick Start
 
@@ -30,9 +30,9 @@ cp .env.docker.example .env.docker.local
 # Edit with your settings
 nano .env.docker.local
 
-# Required: Add Clerk keys
-# NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-# CLERK_SECRET_KEY=sk_test_...
+# Required: Add Supabase settings
+# NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
 ### 2. Build Images

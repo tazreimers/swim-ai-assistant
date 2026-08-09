@@ -50,4 +50,5 @@ jobs:
           test -n "$VERCEL_TOKEN"
           npx vercel deploy apps/web --token "$VERCEL_TOKEN" --yes \
             --scope "$VERCEL_ORG_ID" \
-            --build-env NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}"
+            --build-env NEXT_PUBLIC_SUPABASE_URL="${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" \
+            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"

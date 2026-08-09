@@ -5,7 +5,7 @@ Get the Swim AI platform running with Docker in 3 steps.
 ## Prerequisites
 
 - Docker Desktop (Mac/Windows) or Docker + Docker Compose (Linux)
-- Clerk account and API keys (clerk.com)
+- Supabase project URL and anon key (supabase.com)
 
 ## Step 1: Configure Environment
 
@@ -13,7 +13,7 @@ Get the Swim AI platform running with Docker in 3 steps.
 # Create Docker environment file
 cp .env.docker.example .env.docker.local
 
-# Edit and add your Clerk keys
+# Edit and add your Supabase settings
 nano .env.docker.local
 ```
 
@@ -22,8 +22,8 @@ Required environment variables:
 DB_USER=swimuser
 DB_PASSWORD=swimpass
 DB_NAME=swim_db
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```
 
 ## Step 2: Build Images

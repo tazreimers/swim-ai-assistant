@@ -1,11 +1,11 @@
 import { Controller, Get, UseGuards, Req as RequestDecorator } from '@nestjs/common';
-import { ClerkAuthGuard } from '../common/guards/auth.guard';
+import { SupabaseAuthGuard } from '../common/guards/auth.guard';
 import { AuthenticatedRequest } from '../common/types/authenticated-request';
 
 @Controller('user')
 export class UserController {
   @Get('me')
-  @UseGuards(ClerkAuthGuard)
+  @UseGuards(SupabaseAuthGuard)
   getProfile(@RequestDecorator() req: AuthenticatedRequest) {
     return {
       id: req.user?.id,

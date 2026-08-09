@@ -17,13 +17,13 @@ verify the database and CI/CD plans in real environments.
 - Apply Prisma migrations and seed data
 - Configure Railway PostgreSQL, API, and AI services
 - Configure Vercel for the Next.js application
-- Configure Clerk keys in each environment
+- Configure Supabase Auth settings in each environment
 - Run end-to-end release verification
 
 ## Prerequisites
 
 - Access to the GitHub repository settings
-- A Clerk application with development and production keys
+- A Supabase project with development and production settings
 - A Railway account and project
 - A Vercel account and project
 - Docker installed and running locally
@@ -70,7 +70,8 @@ verify the database and CI/CD plans in real environments.
 3. Add required reviewers to the `production` environment.
 4. Add these secrets to the appropriate environment:
 
-   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `RAILWAY_TOKEN`
    - `VERCEL_ORG_ID`
    - `VERCEL_PROJECT_ID`
@@ -96,7 +97,8 @@ verify the database and CI/CD plans in real environments.
 4. Set API environment variables:
 
    - `DATABASE_URL` from the Railway PostgreSQL service
-   - `CLERK_SECRET_KEY`
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
    - `NODE_ENV=production`
    - `PORT=3001`
 
@@ -118,21 +120,22 @@ verify the database and CI/CD plans in real environments.
 3. Configure the output and install settings for the Next.js application.
 4. Set environment variables:
 
-   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `NEXT_PUBLIC_API_URL` pointing to the Railway API
    - `NODE_ENV=production`
 
 5. Configure preview and production domains.
 6. Deploy a preview and verify sign-in, sign-up, dashboard routing, and logout.
 
-## Step 5: Configure Clerk production settings (deferred)
+## Step 5: Configure Supabase production settings (deferred)
 
 1. Configure the development instance for local and preview environments.
 2. Configure the production instance for production.
 3. Enable email/password and any selected social sign-in providers.
 4. Add approved domains and redirect URLs for local, preview, and production.
 5. Confirm the API receives valid bearer tokens from the web application.
-6. Keep Clerk secret keys only in local ignored files and hosted environment
+6. Keep Supabase keys only in local ignored files and hosted environment
    settings.
 
 ## Step 6: Release verification (deferred)

@@ -1,84 +1,108 @@
 'use client';
 
-import { useAuth, useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Chip,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { AppShell } from '../../src/components/layout/app-shell';
+import { createSupabaseBrowserClient } from '../../src/lib/supabase/client';
 
 export default function DashboardPage() {
-  const { isLoaded, isSignedIn, signOut } = useAuth();
-  const { user } = useUser();
-  const router = useRouter();
+  const [displayName, setDisplayName] = useState('Swim AI member');
+  const [role, setRole] = useState<'coach' | 'athlete' | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isLoaded) return;
-    if (!isSignedIn) {
-      router.push('/sign-in');
-    }
-  }, [isLoaded, isSignedIn, router]);
+    let active = true;
 
-  if (!isLoaded || !isSignedIn) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
-  }
+    async function loadUser() {
+      const supabase = createSupabaseBrowserClient();
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (!active) return;
+
+      if (userError) {
+        setError(userError.message);
+        return;
+      }
+
+      if (!user) return;
+
+      setDisplayName(user.user_metadata.full_name || user.email || 'Swim AI member');
+      const metadataRole = user.user_metadata.role;
+      if (metadataRole === 'coach' || metadataRole === 'athlete') {
+        setRole(metadataRole);
+      }
+    }
+
+    void loadUser();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Swim AI</h1>
-            </div>
-            <div className="flex items-center">
-              <p className="text-gray-600 mr-4">Welcome, {user?.firstName || user?.emailAddresses[0]?.emailAddress}</p>
-              <button
-                onClick={async () => {
-                  await signOut();
-                  router.push('/sign-in');
-                }}
-                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <AppShell displayName={displayName}>
+      <Stack spacing={4}>
+        <Box>
+          <Typography variant="overline" color="primary.main" fontWeight={700}>
+            Your workspace
+          </Typography>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Welcome, {displayName.split(' ')[0]}
+          </Typography>
+          <Typography color="text.secondary">
+            Keep your squad moving with simple, focused coaching insights.
+          </Typography>
+        </Box>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Dashboard</h2>
-          <p className="text-gray-600 mb-4">Welcome to the Swim AI coaching platform.</p>
+        {error && <Alert severity="error">{error}</Alert>}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-            <div className="bg-blue-50 rounded-lg p-4">
-              <h3 className="font-semibold text-blue-900">Coaches</h3>
-              <p className="text-gray-600 text-sm mt-2">Manage your coaching profile</p>
-            </div>
-            <div className="bg-green-50 rounded-lg p-4">
-              <h3 className="font-semibold text-green-900">Athletes</h3>
-              <p className="text-gray-600 text-sm mt-2">Track athlete performance</p>
-            </div>
-            <div className="bg-purple-50 rounded-lg p-4">
-              <h3 className="font-semibold text-purple-900">Workouts</h3>
-              <p className="text-gray-600 text-sm mt-2">Create and assign workouts</p>
-            </div>
-          </div>
+        <Card sx={{ background: 'linear-gradient(135deg, #e7f5f2 0%, #edf7fb 100%)' }}>
+          <CardContent>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  {role === 'athlete' ? "Today's training" : 'Your next session'}
+                </Typography>
+                <Typography color="text.secondary">
+                  Your session workspace will appear here as soon as your club is set up.
+                </Typography>
+              </Box>
+              {role && <Chip label={role === 'coach' ? 'Coach' : 'Athlete'} color="primary" />}
+            </Stack>
+          </CardContent>
+        </Card>
 
-          <div className="mt-8 p-4 bg-gray-100 rounded">
-            <h3 className="font-semibold text-gray-900 mb-2">User Information</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <p><strong>User ID:</strong> {user?.id}</p>
-              <p><strong>Email:</strong> {user?.emailAddresses[0]?.emailAddress}</p>
-              <p><strong>Name:</strong> {user?.firstName} {user?.lastName}</p>
-              <p><strong>Created:</strong> {user?.createdAt?.toLocaleDateString()}</p>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+        <Grid container spacing={2}>
+          {[
+            ['Clubs and squads', 'Organize your swimming community.'],
+            ['Training sessions', 'Plan and publish the work that matters.'],
+            ['Progress insights', 'See the patterns behind every rep.'],
+          ].map(([title, description]) => (
+            <Grid item xs={12} md={4} key={title}>
+              <Card sx={{ height: '100%' }}>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {title}
+                  </Typography>
+                  <Typography color="text.secondary">{description}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Stack>
+    </AppShell>
   );
 }

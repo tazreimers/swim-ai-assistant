@@ -16,14 +16,16 @@ function check(name, passed, detail) {
 }
 
 check(
-  'Web Clerk environment',
-  hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY'),
-  'apps/web/.env.local contains the public Clerk key',
+  'Web Supabase environment',
+  hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_URL') &&
+    hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_ANON_KEY'),
+  'apps/web/.env.local contains the Supabase URL and anon key',
 );
 check(
-  'API Clerk environment',
-  hasVariable(`${root}apps/api/.env`, 'CLERK_SECRET_KEY'),
-  'apps/api/.env contains the Clerk secret key',
+  'API Supabase environment',
+  hasVariable(`${root}apps/api/.env`, 'SUPABASE_URL') &&
+    hasVariable(`${root}apps/api/.env`, 'SUPABASE_ANON_KEY'),
+  'apps/api/.env contains the Supabase URL and anon key',
 );
 check(
   'API database environment',

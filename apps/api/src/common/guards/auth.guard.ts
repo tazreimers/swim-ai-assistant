@@ -4,11 +4,11 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { verifyToken } from '@clerk/backend';
+import { createClient } from '@supabase/supabase-js';
 import type { AuthenticatedRequest } from '../types/authenticated-request';
 
 @Injectable()
-export class ClerkAuthGuard implements CanActivate {
+export class SupabaseAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const authorization = request.headers.authorization;
@@ -20,29 +20,36 @@ export class ClerkAuthGuard implements CanActivate {
       throw new UnauthorizedException('Missing bearer token');
     }
 
-    const secretKey = process.env.CLERK_SECRET_KEY;
-    if (!secretKey) {
-      throw new UnauthorizedException('Clerk authentication is not configured');
+    const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey =
+      process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new UnauthorizedException('Supabase authentication is not configured');
     }
 
     try {
-      const claims = await verifyToken(token, {
-        secretKey,
-        issuer: null,
+      const supabase = createClient(supabaseUrl, supabaseKey, {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
       });
+      const { data, error } = await supabase.auth.getUser(token);
 
-      if (!claims.sub) {
-        throw new UnauthorizedException('Token does not contain a user ID');
+      if (error || !data.user) {
+        throw new UnauthorizedException('Invalid or expired bearer token');
       }
 
       request.user = {
-        id: claims.sub,
-        email: typeof claims.email === 'string' ? claims.email : '',
-        firstName:
-          typeof claims.first_name === 'string' ? claims.first_name : undefined,
-        lastName:
-          typeof claims.last_name === 'string' ? claims.last_name : undefined,
-        imageUrl: typeof claims.image_url === 'string' ? claims.image_url : undefined,
+        id: data.user.id,
+        email: data.user.email ?? '',
+        firstName: typeof data.user.user_metadata?.full_name === 'string'
+          ? data.user.user_metadata.full_name.split(' ')[0]
+          : undefined,
+        lastName: typeof data.user.user_metadata?.full_name === 'string'
+          ? data.user.user_metadata.full_name.split(' ').slice(1).join(' ') || undefined
+          : undefined,
       };
 
       return true;
@@ -51,7 +58,7 @@ export class ClerkAuthGuard implements CanActivate {
         throw error;
       }
 
-      throw new UnauthorizedException('Invalid or expired bearer token');
+      throw new UnauthorizedException('Unable to verify bearer token');
     }
   }
 }

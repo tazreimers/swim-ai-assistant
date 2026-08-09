@@ -4,13 +4,13 @@ NestJS REST API backend for the Swim AI coaching platform.
 
 ## Purpose
 
-RESTful API that handles authentication, data management, and business logic for the Swim AI platform. Integrates with PostgreSQL via Prisma ORM and uses Clerk for JWT verification.
+RESTful API that handles authentication, data management, and business logic for the Swim AI platform. Integrates with PostgreSQL via Prisma ORM and verifies Supabase Auth tokens.
 
 ## Tech Stack
 
 - **Framework**: NestJS 10+
 - **Database**: PostgreSQL + Prisma ORM
-- **Auth**: Clerk JWT verification
+- **Auth**: Supabase Auth token verification
 - **Validation**: class-validator
 - **Types**: TypeScript 5+
 - **Shared**: @swim/shared types and schemas
@@ -49,7 +49,7 @@ API runs on `http://localhost:3001` in development.
 
 ## Key Features (MVP)
 
-- User authentication via Clerk
+- User authentication via Supabase Auth
 - JWT token verification on protected routes
 - CRUD operations for core entities
 - Database migrations and seeding
@@ -60,7 +60,8 @@ API runs on `http://localhost:3001` in development.
 
 ```bash
 DATABASE_URL=postgresql://user:password@localhost:5432/swim_db
-CLERK_SECRET_KEY=
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
 NODE_ENV=development
 PORT=3001
 ```
@@ -90,7 +91,7 @@ Opens browser UI to view and edit database data.
 
 ## API Endpoints
 
-Core endpoints are protected by Clerk JWT authentication:
+Core endpoints are protected by Supabase Auth JWT authentication:
 
 - `POST /auth/user` - Get current user
 - `GET /athletes` - List athletes

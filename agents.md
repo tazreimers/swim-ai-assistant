@@ -4,8 +4,8 @@ This repository is Swim AI, an AI-first swimming coaching platform.
 
 ## Repository context
 
-- `apps/web`: Next.js 14 frontend with Clerk authentication
-- `apps/api`: NestJS API with Clerk JWT verification and Prisma
+- `apps/web`: Next.js 14 frontend with Supabase Auth and MUI
+- `apps/api`: NestJS API with authentication verification and Prisma
 - `apps/ai`: FastAPI AI service
 - `packages/shared`: shared TypeScript types, Zod schemas, constants, and utilities
 - `plans`: implementation plans and progress tracking
