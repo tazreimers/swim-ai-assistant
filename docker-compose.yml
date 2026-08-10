@@ -36,6 +36,9 @@ services:
       SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
       SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
       SUPABASE_SESSION_PHOTOS_BUCKET: ${SUPABASE_SESSION_PHOTOS_BUCKET:-session-photos}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      AI_SERVICE_URL: http://ai:8000
+      AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN}
       PORT: 3001
     depends_on:
       postgres:
@@ -67,6 +70,7 @@ services:
       NEXT_PUBLIC_API_URL: http://localhost:3001
       NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY}
     depends_on:
       - api
     volumes:
@@ -95,6 +99,10 @@ services:
     environment:
       ENVIRONMENT: development
       API_URL: http://api:3001
+      AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN}
+      AI_MODE: ${AI_MODE:-mock}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     depends_on:
       - api
     volumes:

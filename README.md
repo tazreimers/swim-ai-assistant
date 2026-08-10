@@ -28,7 +28,7 @@ swim-ai-assistant/
 │   └── shared/           # Shared types, schemas, utilities
 ├── docs/                 # Documentation
 ├── plans/                # Development plans
-└── prisma/               # Database schema & migrations
+└── apps/api/prisma/      # Database schema, migrations, and seed
 ```
 
 ## 🚀 Quick Start
@@ -120,7 +120,7 @@ Each app and package has a detailed README:
 
 ## 🔐 Environment Configuration
 
-Copy `.env.example` to `.env.local` and configure:
+Copy `.env.example` to the relevant local environment files and configure:
 
 ```env
 # Database
@@ -133,6 +133,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 # API Configuration
 NEXT_PUBLIC_API_URL=http://localhost:3001
 AI_SERVICE_URL=http://localhost:8000
+AI_MODE=mock
 ```
 
 ## 🐳 Docker
@@ -145,14 +146,9 @@ docker-compose up
 
 ## 📋 Development Plans
 
-See [`plans/README.md`](./plans/README.md) for detailed Phase 1 infrastructure plans:
-
-1. ✅ [Monorepo Setup](./plans/01-monorepo-setup.md)
-2. [Docker Setup](./plans/02-docker-setup.md)
-3. [Authentication Setup](./plans/03-authentication-setup.md)
-4. [Database Setup](./plans/04-database-setup.md)
-5. [Shared Packages](./plans/05-shared-packages.md)
-6. [CI/CD Pipeline](./plans/06-ci-cd-pipeline.md)
+Plans 1–12 cover infrastructure, Supabase/MUI authentication, clubs,
+sessions, athlete logging, analytics, and AI insights. Current status is in
+[`plans/PROGRESS.md`](./plans/PROGRESS.md).
 
 ## 🔄 Git Workflow
 

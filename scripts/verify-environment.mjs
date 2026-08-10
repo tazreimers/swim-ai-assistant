@@ -18,8 +18,9 @@ function check(name, passed, detail) {
 check(
   'Web Supabase environment',
   hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_URL') &&
-    hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_ANON_KEY'),
-  'apps/web/.env.local contains the Supabase URL and anon key',
+    (hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_ANON_KEY') ||
+      hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY')),
+  'apps/web/.env.local contains the Supabase URL and anon or publishable key',
 );
 check(
   'API Supabase environment',
