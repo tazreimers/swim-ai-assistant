@@ -3,6 +3,8 @@
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupsIcon from '@mui/icons-material/Groups';
+import TodayIcon from '@mui/icons-material/Today';
+import PoolIcon from '@mui/icons-material/Pool';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -46,6 +48,8 @@ export function AppShell({
   const navigation = [
     { label: 'Dashboard', href: '/dashboard', icon: <DashboardIcon /> },
     { label: 'Clubs', href: '/clubs', icon: <GroupsIcon /> },
+    { label: 'Coach sessions', href: '/coach/sessions/new', icon: <PoolIcon /> },
+    { label: "Today's session", href: '/athlete/today', icon: <TodayIcon /> },
     { label: 'My progress', href: '/progress', icon: <DirectionsRunIcon /> },
   ];
 

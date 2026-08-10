@@ -13,6 +13,19 @@ enum SessionStatus {
   MISSED
 }
 
+enum SessionWorkflowStatus {
+  DRAFT
+  PUBLISHED
+  COMPLETED
+  ARCHIVED
+}
+
+enum AthleteResultStatus {
+  IN_PROGRESS
+  COMPLETED
+  MISSED
+}
+
 enum ClubRole {
   OWNER
   COACH
@@ -50,6 +63,8 @@ model User {
   sentInvitations     Invitation[]      @relation("InvitationSender")
   acceptedInvitations Invitation[]      @relation("InvitationAccepter")
   squadMemberships    SquadMembership[]
+  coachedSessions     Session[]         @relation("SessionCoach")
+  athleteResults      AthleteResult[]   @relation("AthleteResultUser")
 }
 
 model Club {
@@ -63,6 +78,7 @@ model Club {
   squads      Squad[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+  Session     Session[]
 
   @@index([ownerId])
   @@index([status])
@@ -113,6 +129,7 @@ model Squad {
   isActive    Boolean           @default(true)
   club        Club              @relation(fields: [clubId], references: [id], onDelete: Cascade)
   memberships SquadMembership[]
+  sessions    Session[]
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 
@@ -211,18 +228,100 @@ model WorkoutSet {
 }
 
 model Session {
-  id            String        @id @default(uuid()) @db.Uuid
-  workoutId     String        @db.Uuid
-  athleteId     String        @db.Uuid
-  scheduledDate DateTime
-  completedDate DateTime?
-  status        SessionStatus @default(PENDING)
-  notes         String?
-  workout       Workout       @relation(fields: [workoutId], references: [id], onDelete: Restrict)
-  athlete       Athlete       @relation(fields: [athleteId], references: [id], onDelete: Cascade)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id             String                @id @default(uuid()) @db.Uuid
+  workoutId      String?               @db.Uuid
+  athleteId      String?               @db.Uuid
+  clubId         String?               @db.Uuid
+  squadId        String?               @db.Uuid
+  coachId        String?               @db.Uuid
+  title          String?
+  sessionType    String?
+  scheduledDate  DateTime
+  completedDate  DateTime?
+  publishedAt    DateTime?
+  status         SessionStatus         @default(PENDING)
+  workflowStatus SessionWorkflowStatus @default(DRAFT)
+  notes          String?
+  workout        Workout?              @relation(fields: [workoutId], references: [id], onDelete: Restrict)
+  athlete        Athlete?              @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  club           Club?                 @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  squad          Squad?                @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  coach          User?                 @relation("SessionCoach", fields: [coachId], references: [id], onDelete: Restrict)
+  photo          SessionPhoto?
+  mainSets       MainSet[]
+  results        AthleteResult[]
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
 
   @@index([athleteId, scheduledDate])
   @@index([workoutId])
+  @@index([clubId, scheduledDate])
+  @@index([squadId, scheduledDate, workflowStatus])
+  @@index([coachId, scheduledDate])
+  @@map("sessions")
+}
+
+model SessionPhoto {
+  id          String   @id @default(uuid()) @db.Uuid
+  sessionId   String   @unique @db.Uuid
+  storagePath String
+  contentType String
+  sizeBytes   Int
+  session     Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("session_photos")
+}
+
+model MainSet {
+  id             String      @id @default(uuid()) @db.Uuid
+  sessionId      String      @db.Uuid
+  position       Int
+  stroke         String?
+  distanceMeters Int?
+  repetitions    Int
+  sendOffSeconds Int?
+  notes          String?
+  session        Session     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  repResults     RepResult[]
+
+  @@unique([sessionId, position])
+  @@index([sessionId])
+  @@map("main_sets")
+}
+
+model AthleteResult {
+  id          String              @id @default(uuid()) @db.Uuid
+  sessionId   String              @db.Uuid
+  userId      String              @db.Uuid
+  status      AthleteResultStatus @default(IN_PROGRESS)
+  startedAt   DateTime            @default(now())
+  completedAt DateTime?
+  session     Session             @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user        User                @relation("AthleteResultUser", fields: [userId], references: [id], onDelete: Cascade)
+  repResults  RepResult[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@unique([sessionId, userId])
+  @@index([userId, completedAt])
+  @@map("athlete_results")
+}
+
+model RepResult {
+  id              String        @id @default(uuid()) @db.Uuid
+  athleteResultId String        @db.Uuid
+  mainSetId       String        @db.Uuid
+  repNumber       Int
+  timeMs          Int
+  notes           String?
+  athleteResult   AthleteResult @relation(fields: [athleteResultId], references: [id], onDelete: Cascade)
+  mainSet         MainSet       @relation(fields: [mainSetId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@unique([athleteResultId, mainSetId, repNumber])
+  @@index([mainSetId])
+  @@map("rep_results")
 }

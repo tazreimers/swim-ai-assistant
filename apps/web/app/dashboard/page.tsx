@@ -88,7 +88,7 @@ export default function DashboardPage() {
         <Grid container spacing={2}>
           {[
             ['Clubs and squads', 'Organize your swimming community.', '/clubs'],
-            ['Training sessions', 'Plan and publish the work that matters.'],
+            ['Training sessions', 'Plan and publish the work that matters.', '/coach/sessions/new'],
             ['Progress insights', 'See the patterns behind every rep.'],
           ].map(([title, description, href]) => (
             <Grid item xs={12} md={4} key={title}>

@@ -64,6 +64,8 @@ API runs on `http://localhost:3001` in development.
 DATABASE_URL=postgresql://user:password@localhost:5432/swim_db
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_SESSION_PHOTOS_BUCKET=session-photos
 NODE_ENV=development
 PORT=3001
 ```
@@ -102,6 +104,11 @@ Core endpoints are protected by Supabase Auth JWT authentication:
 - `POST /invitations/:token/accept` - Accept a club invitation
 - `POST /clubs/:clubId/squads` - Create a squad
 - `POST /squads/:squadId/members` - Add a club athlete to a squad
+- `POST /sessions` - Create a draft training session
+- `POST /sessions/:sessionId/publish` - Publish a session
+- `GET /athletes/me/sessions/today` - List today's sessions for an athlete
+- `PUT /sessions/:sessionId/my-result` - Save athlete rep results
+- `POST /sessions/:sessionId/photo` - Create a signed whiteboard upload
 - `GET /athletes` - List athletes
 - `POST /athletes` - Create athlete
 - `GET /teams` - List teams
