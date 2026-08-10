@@ -102,7 +102,19 @@ export class AnalyticsService {
       include: {
         user: { select: { id: true, name: true } },
         repResults: true,
-        session: { select: { id: true, scheduledDate: true, mainSets: true } },
+        session: {
+          select: {
+            id: true,
+            scheduledDate: true,
+            mainSets: true,
+            aiReports: {
+              where: { status: 'COMPLETED', reportType: 'SESSION' },
+              orderBy: { createdAt: 'desc' },
+              take: 1,
+              select: { renderedSummary: true, result: true },
+            },
+          },
+        },
       },
       orderBy: { session: { scheduledDate: 'asc' } },
     });
@@ -145,6 +157,10 @@ export class AnalyticsService {
       largestImprovementMs: improvements[0]?.improvementMs ?? 0,
       largestPaceDropOff: this.findLargestDropOff(results),
       recentSessions: [...new Set(results.map((result) => result.session.id))].length,
+      latestCompletedSessionId: results.at(-1)?.session.id ?? null,
+      latestAiSummary: results
+        .map((result) => result.session.aiReports[0]?.renderedSummary)
+        .find((summary): summary is string => Boolean(summary)) ?? null,
     };
   }
 

@@ -6,6 +6,11 @@ FastAPI AI service for the Swim AI coaching platform.
 
 Standalone AI microservice providing workout generation, coaching recommendations, and analysis using large language models and domain-specific algorithms.
 
+The `/insights` endpoint accepts normalized completed-session results and
+returns structured session, coach, and athlete insights. Set `AI_MODE=mock`
+for local development without an OpenAI key. Production deployments should
+keep `OPENAI_API_KEY` server-side and use `AI_MODE=openai`.
+
 ## Tech Stack
 
 - **Framework**: FastAPI

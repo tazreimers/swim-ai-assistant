@@ -42,6 +42,20 @@ enum ClubStatus {
   ARCHIVED
 }
 
+enum AiReportStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  STALE
+}
+
+enum AiReportType {
+  SESSION
+  ATHLETE
+  COACH
+}
+
 enum InvitationStatus {
   PENDING
   ACCEPTED
@@ -65,6 +79,7 @@ model User {
   squadMemberships    SquadMembership[]
   coachedSessions     Session[]         @relation("SessionCoach")
   athleteResults      AthleteResult[]   @relation("AthleteResultUser")
+  aiReports           AiReport[]        @relation("AiReportAthlete")
 }
 
 model Club {
@@ -250,6 +265,7 @@ model Session {
   photo          SessionPhoto?
   mainSets       MainSet[]
   results        AthleteResult[]
+  aiReports      AiReport[]
   createdAt      DateTime              @default(now())
   updatedAt      DateTime              @updatedAt
 
@@ -324,4 +340,29 @@ model RepResult {
   @@unique([athleteResultId, mainSetId, repNumber])
   @@index([mainSetId])
   @@map("rep_results")
+}
+
+model AiReport {
+  id               String         @id @default(uuid()) @db.Uuid
+  sessionId        String         @db.Uuid
+  athleteId        String?        @db.Uuid
+  reportType       AiReportType
+  status           AiReportStatus @default(QUEUED)
+  promptVersion    String
+  model            String?
+  inputSummaryHash String
+  result           Json?
+  renderedSummary  String?
+  errorCode        String?
+  retryCount       Int            @default(0)
+  startedAt        DateTime?
+  completedAt      DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  session          Session        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  athlete          User?          @relation("AiReportAthlete", fields: [athleteId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, athleteId, reportType, inputSummaryHash])
+  @@index([sessionId, reportType, status])
+  @@index([athleteId, createdAt])
 }

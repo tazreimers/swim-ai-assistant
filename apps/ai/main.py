@@ -3,9 +3,11 @@ Swim AI - FastAPI AI Service
 Provides AI-powered workout generation and coaching features.
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import logging
+import os
+from app.insights import InsightRequest, InsightResponse, generate_insights
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +44,22 @@ async def root():
         "version": "0.1.0",
         "description": "AI service for swimming coaching",
     }
+
+
+@app.post("/insights", response_model=InsightResponse)
+async def create_insights(
+    request: InsightRequest,
+    authorization: str | None = Header(default=None),
+):
+    """Generate schema-shaped session and athlete coaching insights."""
+    service_token = os.getenv("AI_SERVICE_TOKEN")
+    if service_token and authorization != f"Bearer {service_token}":
+        raise HTTPException(status_code=401, detail="Invalid service token")
+    try:
+        return await generate_insights(request)
+    except Exception as error:
+        logger.exception("Insight generation failed")
+        raise HTTPException(status_code=503, detail="Insight provider unavailable") from error
 
 
 if __name__ == "__main__":

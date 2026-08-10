@@ -19,15 +19,18 @@ import { useEffect, useState } from 'react';
 import { AppShell } from '../../src/components/layout/app-shell';
 import { ProgressChart } from '../../src/components/analytics/progress-chart';
 import { AthleteProgress, formatTime, getMyProgress } from '../../src/lib/analytics';
+import { AiReport, getMyInsights } from '../../src/lib/ai';
 
 export default function ProgressPage() {
   const [progress, setProgress] = useState<AthleteProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [insights, setInsights] = useState<AiReport[]>([]);
 
   useEffect(() => {
     void getMyProgress().then(setProgress).catch((loadError: unknown) =>
       setError(loadError instanceof Error ? loadError.message : 'Unable to load progress'),
     );
+    void getMyInsights().then(setInsights).catch(() => undefined);
   }, []);
 
   const metrics = progress?.metrics;
@@ -57,6 +60,27 @@ export default function ProgressPage() {
               ))}
             </Grid>
             <Card><CardContent><Typography variant="h6" gutterBottom>Average time trend</Typography><ProgressChart points={progress.progressPoints} /></CardContent></Card>
+            <Card><CardContent>
+              <Typography variant="h6" gutterBottom>AI feedback</Typography>
+              {insights.length === 0 ? (
+                <Typography color="text.secondary">Complete a session to receive personalized feedback.</Typography>
+              ) : (
+                <Stack spacing={2}>
+                  {insights.slice(0, 3).map((insight) => (
+                    <Box key={insight.id}>
+                      <Typography fontWeight={700}>{insight.session?.title ?? 'Training session'}</Typography>
+                      <Typography color="text.secondary">
+                        {insight.status === 'COMPLETED'
+                          ? insight.renderedSummary
+                          : insight.status === 'FAILED'
+                            ? 'Feedback could not be generated. Please try again later.'
+                            : 'Feedback is being prepared...'}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              )}
+            </CardContent></Card>
             <Card><CardContent>
               <Typography variant="h6" gutterBottom>Session history</Typography>
               {progress.sessionHistory.length === 0 ? (

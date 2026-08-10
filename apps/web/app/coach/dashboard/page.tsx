@@ -2,6 +2,7 @@
 
 import {
   Alert,
+  Button,
   Box,
   Card,
   CardContent,
@@ -14,10 +15,13 @@ import { useEffect, useState } from 'react';
 import { AppShell } from '../../../src/components/layout/app-shell';
 import { listClubs } from '../../../src/lib/clubs';
 import { CoachDashboard, formatTime, getCoachDashboard } from '../../../src/lib/analytics';
+import { generateAiReport } from '../../../src/lib/ai';
 
 export default function CoachDashboardPage() {
   const [dashboard, setDashboard] = useState<CoachDashboard | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [generating, setGenerating] = useState(false);
+  const latestCompletedSessionId = dashboard?.latestCompletedSessionId;
 
   useEffect(() => {
     void listClubs()
@@ -56,6 +60,34 @@ export default function CoachDashboardPage() {
                 </Grid>
               ))}
             </Grid>
+            <Card sx={{ background: 'linear-gradient(135deg, #e7f5f2 0%, #edf7fb 100%)' }}>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>AI coaching summary</Typography>
+                <Typography color="text.secondary">
+                  {dashboard.latestAiSummary ?? 'Generate a report after a completed session to see actionable coaching guidance here.'}
+                </Typography>
+                {latestCompletedSessionId && (
+                  <Button
+                    sx={{ mt: 2 }}
+                    variant="contained"
+                    disabled={generating}
+                    onClick={() => {
+                      setGenerating(true);
+                      void generateAiReport(latestCompletedSessionId)
+                        .then((report) => {
+                          setDashboard({ ...dashboard, latestAiSummary: report.renderedSummary ?? null });
+                        })
+                        .catch((loadError: unknown) => {
+                          setError(loadError instanceof Error ? loadError.message : 'Unable to generate AI report');
+                        })
+                        .finally(() => setGenerating(false));
+                    }}
+                  >
+                    {generating ? 'Generating...' : 'Generate latest report'}
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}><InsightCard title="Most improved swimmer" value={dashboard.mostImproved ? `${dashboard.mostImproved.athleteName} · ${formatTime(dashboard.mostImproved.improvementMs)} faster` : 'Not enough comparable data yet'} /></Grid>
               <Grid item xs={12} md={6}><InsightCard title="Largest pace drop-off" value={dashboard.largestPaceDropOff ? `${dashboard.largestPaceDropOff.athleteName} · ${formatTime(dashboard.largestPaceDropOff.dropOffMs)} slower` : 'Not enough completed reps yet'} /></Grid>

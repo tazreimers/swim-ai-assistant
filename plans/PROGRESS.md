@@ -745,6 +745,34 @@ Python dependencies installed: 24 packages in virtual environment
 - ✅ Auth callback and password-reset routes are implemented
 - ⏳ Add project credentials, Auth redirect URLs, database connection, and private `session-photos` Storage bucket in Supabase
 
+### Phase 2, Plan 12: AI Insights, Reports, and MVP Validation
+**Status**: ✅ IMPLEMENTED | **Completed**: August 10, 2026
+
+#### What Was Implemented
+- ✅ Added a typed FastAPI `/insights` endpoint with OpenAI and local mock modes
+- ✅ Added versioned, domain-specific prompts with deterministic facts, missing-data flags, and anti-fabrication guidance
+- ✅ Added persisted AI report states: queued, processing, completed, failed, and stale
+- ✅ Added idempotent report generation using a normalized input summary hash
+- ✅ Added authenticated NestJS endpoints for generating, retrieving, listing athlete insights, and regenerating reports
+- ✅ Automatically attempts athlete feedback generation when an athlete completes a session
+- ✅ Added coach dashboard AI summary display and latest completed-session report generation
+- ✅ Added athlete progress AI feedback cards
+- ✅ Added service-to-service token support and explicit provider failure handling
+
+#### Configuration
+- `AI_SERVICE_URL` points the API to FastAPI
+- `AI_SERVICE_TOKEN` optionally authenticates API-to-AI requests
+- `AI_MODE=mock` supports local development without OpenAI
+- `AI_MODE=openai` uses `OPENAI_API_KEY` and `OPENAI_MODEL`
+
+#### Validation
+- ✅ Prisma schema validation and client generation pass
+- ✅ API type-check, lint, and production build pass
+- ✅ Web type-check, lint, and production build pass
+- ✅ FastAPI modules compile successfully
+- ✅ Mock AI endpoint smoke test returns structured session and athlete output
+- ⚠️ Live OpenAI calls, database migration execution, and end-to-end Supabase flows remain external
+
 ---
 
 ## 🔗 Related Documents
@@ -784,6 +812,6 @@ Python dependencies installed: 24 packages in virtual environment
 
 ---
 
-**Status**: 🚧 Foundation 4/7 complete; Phase 2 Plans 08-11 complete
-**Next Action**: Implement Plan 12 for AI insights and MVP validation
+**Status**: 🚧 Foundation 4/7 complete; Phase 2 Plans 08-12 implemented
+**Next Action**: Configure external services and run the MVP pilot validation loop
 **Estimated Time to Next Milestone**: 30-60 minutes plus external service configuration

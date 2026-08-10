@@ -42,7 +42,9 @@ export type CoachDashboard = {
     dropOffMs: number;
   } | null;
   recentSessions: number;
-};
+  latestCompletedSessionId: string | null;
+  latestAiSummary: string | null;
+}
 
 export async function getMyProgress() {
   return fetchApi<AthleteProgress>('/athletes/me/progress');

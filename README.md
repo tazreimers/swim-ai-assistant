@@ -1,5 +1,8 @@
 https://tazreimers.atlassian.net?continue=https%3A%2F%2Ftazreimers.atlassian.net%2Fwelcome%2Fsoftware&atlOrigin=eyJpIjoiZDY5YTkwNWRmNTgzNDY2MDljYjEwODJkZGVhZDk4ZDgiLCJwIjoiaiJ9
 
+https://docs.google.com/spreadsheets/d/1WiUeMio2kRwZIJYxVYxwU1Hi0xdoxgf88UVEm2h6oVQ/edit?gid=697327#gid=697327
+
+https://supabase.com/dashboard/project/ctkiohnrxwrjfeamikul
 
 # Swim AI - AI-First Swimming Coaching Platform
 

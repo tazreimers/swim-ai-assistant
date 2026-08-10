@@ -4,6 +4,7 @@ import { UserModule } from './user/user.module';
 import { ClubModule } from './club/club.module';
 import { SessionModule } from './session/session.module';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { AiModule } from './ai/ai.module';
 
 @Controller()
 class HealthController {
@@ -14,7 +15,7 @@ class HealthController {
 }
 
 @Module({
-  imports: [PrismaModule, UserModule, ClubModule, SessionModule, AnalyticsModule],
+  imports: [PrismaModule, UserModule, ClubModule, SessionModule, AnalyticsModule, AiModule],
   controllers: [HealthController],
   providers: [],
 })

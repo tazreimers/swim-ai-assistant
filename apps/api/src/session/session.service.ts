@@ -16,6 +16,7 @@ import { createClient } from '@supabase/supabase-js';
 import { randomBytes } from 'node:crypto';
 import type { AuthenticatedRequest } from '../common/types/authenticated-request';
 import { PrismaService } from '../prisma/prisma.service';
+import { AiService } from '../ai/ai.service';
 import {
   CreateSessionDto,
   MainSetDto,
@@ -29,7 +30,10 @@ type AuthUser = NonNullable<AuthenticatedRequest['user']>;
 
 @Injectable()
 export class SessionService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly aiService: AiService,
+  ) {}
 
   private async ensureUser(authUser: AuthUser) {
     const name = [authUser.firstName, authUser.lastName]
@@ -311,7 +315,7 @@ export class SessionService {
       throw new BadRequestException('Enter every rep time before completing');
     }
 
-    return this.prisma.athleteResult.update({
+    const completedResult = await this.prisma.athleteResult.update({
       where: { id: result.id },
       data: {
         status: AthleteResultStatus.COMPLETED,
@@ -319,6 +323,14 @@ export class SessionService {
       },
       include: { repResults: true },
     });
+
+    try {
+      await this.aiService.generateReport(authUser, sessionId);
+      return { ...completedResult, aiReportStatus: 'COMPLETED' as const };
+    } catch (error) {
+      if (!(error instanceof ServiceUnavailableException)) throw error;
+      return { ...completedResult, aiReportStatus: 'FAILED' as const };
+    }
   }
 
   async createPhotoUpload(
