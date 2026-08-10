@@ -722,6 +722,29 @@ Python dependencies installed: 24 packages in virtual environment
 - ✅ API type-check, lint, and production build pass
 - ⚠️ PostgreSQL migration and Supabase Storage bucket configuration remain external
 
+### Phase 2, Plan 11: Results, Progress Tracking, and Dashboards
+**Status**: ✅ COMPLETE | **Completed**: August 10, 2026
+
+#### What Was Implemented
+- ✅ Added authorization-scoped analytics endpoints for athlete progress, session results, summaries, coach dashboards, and squad progress
+- ✅ Added deterministic average, best, worst, rep-difference, attendance, improvement, and pace drop-off calculations
+- ✅ Added athlete progress and session history views with accessible SVG trend charts
+- ✅ Added coach dashboard metrics for attendance, average performance, most improved athletes, and pace drop-off
+- ✅ Added loading, empty, error, insufficient-data, and mobile-friendly dashboard states
+- ✅ Added dashboard navigation and links from the main dashboard
+
+#### Validation
+- ✅ Web type-check, lint, and production build pass
+- ✅ API type-check, lint, and production build pass
+- ✅ Diff whitespace validation passes
+- ⚠️ Live database queries and Supabase authorization remain external until PostgreSQL and the Supabase project are configured
+
+#### Supabase Setup Status
+- ✅ Supabase Auth integration is wired for browser, server, middleware, and API token verification
+- ✅ Web clients accept `NEXT_PUBLIC_SUPABASE_ANON_KEY` or `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- ✅ Auth callback and password-reset routes are implemented
+- ⏳ Add project credentials, Auth redirect URLs, database connection, and private `session-photos` Storage bucket in Supabase
+
 ---
 
 ## 🔗 Related Documents
@@ -761,6 +784,6 @@ Python dependencies installed: 24 packages in virtual environment
 
 ---
 
-**Status**: 🚧 Foundation 4/7 complete; Phase 2 Plan 08 complete
-**Next Action**: Implement Plan 11 for results, progress tracking, and dashboards
+**Status**: 🚧 Foundation 4/7 complete; Phase 2 Plans 08-11 complete
+**Next Action**: Implement Plan 12 for AI insights and MVP validation
 **Estimated Time to Next Milestone**: 30-60 minutes plus external service configuration

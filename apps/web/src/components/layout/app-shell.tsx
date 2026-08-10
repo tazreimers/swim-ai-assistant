@@ -49,6 +49,7 @@ export function AppShell({
     { label: 'Dashboard', href: '/dashboard', icon: <DashboardIcon /> },
     { label: 'Clubs', href: '/clubs', icon: <GroupsIcon /> },
     { label: 'Coach sessions', href: '/coach/sessions/new', icon: <PoolIcon /> },
+    { label: 'Coach dashboard', href: '/coach/dashboard', icon: <DashboardIcon /> },
     { label: "Today's session", href: '/athlete/today', icon: <TodayIcon /> },
     { label: 'My progress', href: '/progress', icon: <DirectionsRunIcon /> },
   ];
