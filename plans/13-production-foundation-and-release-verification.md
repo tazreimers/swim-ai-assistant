@@ -37,29 +37,43 @@ real hosted environment and can be observed, recovered, and rolled back.
 
 ## Implementation sequence
 
-1. Document each environment variable, its owner, whether it is browser-safe,
+1. Add root `AGENTS.md` as the mandatory repository instruction for humans and
+   coding agents. It must describe the app boundaries; feature-local structure;
+   TypeScript/Python/MUI standards; authorization and AI safety rules; focused
+   quality commands; and the rule that exceptions are local and documented.
+   Add a more-specific `AGENTS.md` only when a subtree needs rules that differ
+   materially from the root; it must state that the root file is still read.
+2. Standardize quality tooling around the existing root Prettier configuration,
+   ESLint configurations, TypeScript checks, Jest, and pytest. Add a root
+   non-mutating formatting-check command and make CI run it. CI must fail on
+   formatting, lint, type-check, test, Prisma validation, or production build
+   failures; no workflow may use `--fix` or rewrite source files.
+3. Protect the default branch so the required CI checks must pass before merge.
+   Document the exact local commands in `AGENTS.md` and contributor docs; run
+   only affected checks during development and all affected checks before a PR.
+4. Document each environment variable, its owner, whether it is browser-safe,
    and where it is configured. Remove obsolete Clerk and Railway assumptions.
-2. Configure private Supabase Storage buckets and policies for existing session
+5. Configure private Supabase Storage buckets and policies for existing session
    photos; verify API-issued paths and signed reads work in production.
-3. Configure deploy workflows: web deployment after build; API and AI image
+6. Configure deploy workflows: web deployment after build; API and AI image
    build, deploy, health check, then web release. A failed health check stops
    the release.
-4. Run `prisma migrate deploy` against the target database before API startup.
+7. Run `prisma migrate deploy` against the target database before API startup.
    Seed only non-production environments. Never run reset or development
    migrations in production.
-5. Add structured logs with timestamp, service, request ID, route, status,
+8. Add structured logs with timestamp, service, request ID, route, status,
    duration, and safe error code. Do not log bearer tokens, Supabase keys,
    email bodies, report inputs, or uploaded content.
-6. Configure database backups, restore instructions, uptime checks, error
+9. Configure database backups, restore instructions, uptime checks, error
    alerts, and a documented rollback to the prior web deployment/container
    image.
 
 ## CI and verification
 
-Required pull-request checks: shared package build, web/API type-check and
-lint, web/API/AI tests, Prisma validation, and production builds. Required
-release checks: container image build, migration validation, deployed health
-checks, and an authenticated smoke test.
+Required pull-request checks: formatting check, shared package build/type-check,
+web/API lint and type-check, web/API/AI tests, Prisma validation, and
+production builds. Required release checks: container image build, migration
+validation, deployed health checks, and an authenticated smoke test.
 
 The smoke test uses disposable test accounts to: sign in as a coach, create a
 club/squad/session, publish it, sign in as an athlete, save a rep time, and
@@ -72,10 +86,13 @@ read the result. It must clean up only its uniquely named test data.
 - A failed deployment is detectable and can be rolled back without data loss.
 - Secrets stay server-side and logs do not contain sensitive data.
 - A database restore procedure has been tested in a non-production environment.
+- Root `AGENTS.md` exists, its commands match package scripts, and CI enforces
+  formatting, lint, type-check, tests, Prisma validation, and builds.
 
 ## Tests
 
 - Environment validation tests for missing required variables.
+- Formatting/lint/type-check CI failure tests or workflow verification.
 - Authenticated production-like smoke test.
 - API-to-AI invalid-token test.
 - Storage policy tests for authorized, cross-club, and expired signed URLs.
