@@ -1,72 +1,56 @@
-# Swim AI MVP Progress
+# Swim AI Progress
 
-**Last updated:** August 10, 2026
+**Last updated:** August 20, 2026  
 **Repository:** `tazreimers/swim-ai-assistant`
 
-## Plan Status
+## Completed MVP baseline
 
 | Plan | Status | Summary | Remaining work |
 |---|---|---|---|
-| 1. Monorepo setup | ✅ Complete | Turborepo structure, web/API/AI apps, shared package, TypeScript configuration. | None for MVP. |
-| 2. Docker setup | ✅ Complete | Dockerfiles, Compose orchestration, health checks, hot reload, and documentation. | Run locally when Docker is available. |
-| 3. Authentication setup | 🔄 Superseded | Initial Clerk implementation was completed, then replaced by Supabase Auth. | No Clerk work required. |
-| 4. Database setup | ✅ Implemented; ⏳ external verification | Prisma schema, migrations, seed data, database service, and scripts. | Run migrations and seed against reachable PostgreSQL. |
-| 5. Shared packages | ✅ Complete | Shared types, schemas, constants, utilities, builds, and exports. | None for current MVP scope. |
-| 6. CI/CD pipeline | ✅ Configured; ⏳ external verification | Quality, build, container, and deployment workflows plus deployment docs. | Configure GitHub secrets, environments, permissions, and deployment targets. |
-| 7. External environment/release setup | ⏸ Deferred | Repository-side environment checks and handoff documentation are present. | Optional until release: PostgreSQL, Supabase production settings, Vercel, Railway/GHCR, branch protection, and end-to-end release test. |
-| 8. Frontend design system and Supabase Auth | ✅ Complete | MUI theme, responsive shell, Supabase browser/server auth, protected routes, password reset, and API token handling. | Configure Supabase project credentials and redirect URLs. |
-| 9. Clubs, users, invitations, and squads | ✅ Complete | Club onboarding, memberships, role permissions, invitations, squads, API endpoints, and MUI pages. | Add broader automated coverage when pilot workflows stabilize. |
-| 10. Training sessions and athlete logging | ✅ Complete | Session authoring, main sets, whiteboard uploads, publishing, athlete rep entry, autosave-style updates, and completion. | Apply migration and verify private `session-photos` Storage bucket. |
-| 11. Results, progress, and dashboards | ✅ Complete | Deterministic performance metrics, history, accessible charts, athlete progress, coach dashboard, attendance, improvement, and drop-off views. | Add richer filters, club switching, and automated analytics tests if needed. |
-| 12. AI insights and MVP validation | ✅ Implemented; ⏳ pilot validation | Typed FastAPI insights, OpenAI/mock modes, persisted report states, idempotency, retries/failure visibility, athlete feedback, and coach summaries. | Configure OpenAI, run end-to-end report generation, evaluate prompt quality with coaches, and measure pilot success metrics. |
+| 01. Monorepo setup | Complete | Turborepo structure, web/API/AI apps, shared package, TypeScript configuration. | None for MVP. |
+| 02. Docker setup | Complete | Dockerfiles, Compose orchestration, health checks, hot reload, documentation. | Run locally when Docker is available. |
+| 03. CI/CD pipeline | Configured | Quality, build, container, and deployment workflows. | Verify real repository secrets, environments, permissions, and deployment targets in plan 13. |
+| 04. Authentication setup | Superseded | Clerk implementation was replaced by Supabase Auth. | No Clerk work required. |
+| 05. Database setup | Implemented | Prisma schema, migrations, seed data, database service, and scripts. | Verify migrations and seed against reachable PostgreSQL in plan 13. |
+| 06. Shared packages | Complete | Shared types, schemas, constants, utilities, builds, and exports. | None for current MVP scope. |
+| 07. External environment/release setup | Deferred | Earlier external-environment handoff. | Consolidated into plan 13. |
+| 08. Frontend design system and Supabase Auth | Complete | MUI theme, responsive shell, auth, protected routes, reset, API tokens. | Configure production project credentials and redirects in plan 13. |
+| 09. Clubs, users, invitations, and squads | Complete | Club onboarding, memberships, permissions, invitations, squads, API, and MUI pages. | Broader coverage follows pilot workflows. |
+| 10. Training sessions and athlete logging | Complete | Session authoring, main sets, whiteboard upload, publishing, athlete rep entry, completion. | Verify production private `session-photos` Storage bucket in plan 13. |
+| 11. Results, progress, and dashboards | Complete | Performance metrics, history, charts, attendance views, coach dashboards. | Broader analytics arrives in plans 18 and 21. |
+| 12. AI insights and MVP validation | Implemented | Typed FastAPI insights, OpenAI/mock modes, persisted reports, retries, feedback, summaries. | Configure live OpenAI and evaluate pilot usefulness in plans 13 and 24. |
 
-## Quick Plan Status
+## Planned pilot production release
 
-- **Plan 1 — Monorepo:** ✅ Complete
-- **Plan 2 — Docker:** ✅ Complete; local use awaits Docker availability
-- **Plan 3 — CI/CD:** ✅ Configured; external secrets and deployments remain
-- **Plan 4 — Authentication:** 🔄 Superseded by Supabase Auth in Plan 8
-- **Plan 5 — Database:** ✅ Implemented; PostgreSQL migration and seed verification remain
-- **Plan 6 — Shared packages:** ✅ Complete
-- **Plan 7 — External environment:** ⏸ Deferred until release preparation
-- **Plan 8 — MUI and Supabase Auth:** ✅ Complete
-- **Plan 9 — Clubs and squads:** ✅ Complete
-- **Plan 10 — Sessions and athlete logging:** ✅ Complete
-- **Plan 11 — Progress and dashboards:** ✅ Complete
-- **Plan 12 — AI insights and validation:** ✅ Implemented; pilot validation remains
+| Plan | Status | Dependency | Outcome |
+|---|---|---|---|
+| 13. Production foundation and release verification | Planned — release blocker | 01–12 | Hosted, verified, observable MVP. |
+| 14. AthleteOS360 profiles and support access | Planned | 13 | Club athlete profile and scoped support collaboration. |
+| 15. Calendar, season planning, and workout templates | Planned | 14 | Reusable coach planning. |
+| 16. Pool-deck operations, attendance, and announcements | Planned | 14 | Daily club operations. |
+| 17. Wellness, readiness, and support-staff hub | Planned | 14 | Non-clinical wellness workflow. |
+| 18. Competition history, PBs, benchmarks, and CSV import | Planned | 14 | Auditable performance history. |
+| 19. Grounded Swim AI coach assistant | Planned | 14–18 | Cited, permission-aware assistant. |
+| 20. AI workout drafting and fast capture | Planned | 15, 19 | Coach-approved workout drafts. |
+| 21. Unified performance and decision workspace | Planned | 16–20 | Cross-feature coach decision views. |
+| 22. Media and race-review foundation | Planned | 14, 23 review before launch | Secure manual race review. |
+| 23. Platform hardening, security, and operations | Planned | 13–22 | Release-wide security and operational readiness. |
+| 24. Pilot launch and production acceptance | Planned | 23 | Measured, supported pilot launch. |
+| 25. Evidence-led next-release planning | Planned — after pilot | 24 | Future plans based on pilot evidence. |
 
-## Current Product State
+## Current release path
 
-The MVP workflow is implemented end to end in code:
+1. Complete plan 13 before exposing the product to a real club.
+2. Implement plans 14–18; plans 15–18 can be parallelized after access-grant
+   conventions from plan 14 are merged.
+3. Build plans 19–22 in dependency order, then harden all release paths in
+   plan 23.
+4. Execute plan 24’s launch gates and pilot scripts.
+5. Start plan 25 only after two pilot operating weeks of evidence.
 
-1. A user authenticates with Supabase.
-2. A coach creates a club, squad, and training session.
-3. The coach adds main-set details and an optional whiteboard photo.
-4. The session is published to squad athletes.
-5. Athletes enter and complete rep times.
-6. The platform calculates progress and dashboard metrics.
-7. AI reports can produce structured coach and athlete feedback.
+## Explicitly deferred beyond the pilot release
 
-## No Longer Needed
-
-- Clerk authentication work: replaced by Supabase Auth.
-- Railway database configuration for local development: use Docker PostgreSQL.
-- Tailwind/shadcn as the primary frontend system: MUI is now the project standard.
-- The original standalone foundation-only status breakdown: Plans 1–12 are tracked above.
-- Nice-to-have features outside the MVP, including payments, messaging, parent portal, mobile apps, race prediction, video analysis, wearables, voice assistance, and AI workout generation.
-
-## Immediate Next Steps
-
-1. Start PostgreSQL/Docker and apply Prisma migrations plus seed data.
-2. Configure Supabase Auth, database connection, and private Storage bucket.
-3. Configure `OPENAI_API_KEY` or use `AI_MODE=mock` for local testing.
-4. Run an authenticated coach-to-athlete end-to-end workflow.
-5. Begin pilot validation: report usefulness, coach actionability, report latency, athlete logging rate, and club retention.
-
-## Validation Baseline
-
-- API type-check, lint, and production build pass.
-- Web type-check, lint, and production build pass.
-- Prisma schema validation and client generation pass.
-- FastAPI modules compile and the mock `/insights` endpoint returns structured output.
-- Live database, Supabase, OpenAI, and deployment verification remain environment-dependent.
+Payments, direct messaging, parent portal, native mobile applications,
+wearable/timing-system integrations, automatic race-video analysis, race
+prediction, clinical workflows, and multi-sport abstraction. Plan 25 evaluates
+these only when pilot evidence supports them.
