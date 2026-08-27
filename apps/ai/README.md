@@ -60,6 +60,11 @@ API runs on `http://localhost:8000` in development.
 
 ```bash
 OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4o-mini
+AI_MODE=mock
+AI_SERVICE_TOKEN=
+FRONTEND_URL=http://localhost:3000
+LOG_LEVEL=info
 ENVIRONMENT=development
 API_URL=http://localhost:3001
 ```
@@ -111,7 +116,9 @@ docker build -t swim-ai:latest .
 docker run -p 8000:8000 swim-ai:latest
 ```
 
-Ready for deployment to Railway or similar container hosting.
+Deploy as an independent managed container. Configure the environment
+variables in `docs/production-operations.md`; do not put credentials in the
+image or repository.
 
 ## Dependencies
 

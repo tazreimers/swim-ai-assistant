@@ -124,7 +124,7 @@ Copy `.env.example` to the relevant local environment files and configure:
 
 ```env
 # Database
-DATABASE_URL=postgresql://user:password@localhost:5432/swim_db
+DATABASE_URL=<local-postgres-connection-string>
 
 # Authentication (Supabase)
 NEXT_PUBLIC_SUPABASE_URL=...

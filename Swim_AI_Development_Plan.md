@@ -19,9 +19,9 @@ manage, analyse and improve athlete performance.
 -   NestJS (API)
 -   FastAPI (AI)
 -   PostgreSQL + Prisma
--   Clerk Authentication
+-   Supabase Auth
 -   Tailwind + shadcn/ui
--   Vercel + Railway
+-   Vercel + managed containers
 
 ## Phase 1 -- Foundation (Week 1--2)
 

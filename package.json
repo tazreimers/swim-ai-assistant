@@ -14,6 +14,9 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
+    "format:check": "prettier --check \"package.json\" \"scripts/**/*.mjs\" \"apps/api/src/{ai/ai.service.ts,app.module.ts,config/*.ts,main.ts}\" \"apps/api/{jest.config.cjs,package.json,README.md,tsconfig.json}\" \"apps/ai/README.md\" \"{AGENTS,BOOTSTRAP,DATABASE,DEPLOYMENT}.md\" \"docs/production-operations.md\" \"plans/{07-external-environment-setup,PROGRESS}.md\" \".github/workflows/*.yml\"",
+    "validate:prisma": "npm run prisma:validate --prefix apps/api",
+    "test:ai": "python3 -m pytest apps/ai/tests",
     "db:migrate": "turbo run db:migrate --scope=@swim/api",
     "db:migrate:dev": "turbo run db:migrate:dev --scope=@swim/api",
     "db:reset": "turbo run db:reset --scope=@swim/api",
@@ -23,6 +26,7 @@
     "install-turbo": "npm install -g turbo"
   },
   "devDependencies": {
+    "prettier": "^3.9.6",
     "turbo": "^1.10.16"
   }
 }

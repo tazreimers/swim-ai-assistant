@@ -93,6 +93,9 @@ Run the narrowest relevant checks after every change and report anything that
 cannot run. Before a pull request, run all checks affected by the change:
 
 ```bash
+npm run format:check
+npm run validate:prisma
+npm run test:ai
 npm run build --prefix packages/shared
 npm run type-check --prefix packages/shared
 npm run lint --prefix apps/web

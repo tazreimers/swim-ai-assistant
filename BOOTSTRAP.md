@@ -7,26 +7,26 @@
 
 ### Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| **Root** | | |
-| turbo | 1.13.4 | Monorepo build orchestration |
-| **@swim/shared** | | |
-| typescript | 5.1+ | TypeScript compiler |
-| zod | 3.22+ | Runtime validation |
-| **@swim/web** | | |
-| next | 14.0+ | Frontend framework |
-| react | 18.2+ | UI library |
-| tailwindcss | 3.3+ | CSS framework |
-| @clerk/nextjs | 4.29+ | Authentication |
-| **@swim/api** | | |
-| @nestjs/core | 10.2+ | Backend framework |
-| @prisma/client | 5.3+ | Database ORM |
-| @clerk/backend | 0.32+ | JWT verification |
-| **@swim/ai** | | |
-| fastapi | 0.104.1 | Python web framework |
-| uvicorn | 0.24+ | ASGI server |
-| pydantic | 2.4+ | Data validation |
+| Package          | Version | Purpose                      |
+| ---------------- | ------- | ---------------------------- |
+| **Root**         |         |                              |
+| turbo            | 1.13.4  | Monorepo build orchestration |
+| **@swim/shared** |         |                              |
+| typescript       | 5.1+    | TypeScript compiler          |
+| zod              | 3.22+   | Runtime validation           |
+| **@swim/web**    |         |                              |
+| next             | 14.0+   | Frontend framework           |
+| react            | 18.2+   | UI library                   |
+| MUI              | 5+      | UI component library         |
+| Supabase Auth    | 2+      | Authentication               |
+| **@swim/api**    |         |                              |
+| @nestjs/core     | 10.2+   | Backend framework            |
+| @prisma/client   | 5.3+    | Database ORM                 |
+| Supabase Auth    | 2+      | JWT verification             |
+| **@swim/ai**     |         |                              |
+| fastapi          | 0.104.1 | Python web framework         |
+| uvicorn          | 0.24+   | ASGI server                  |
+| pydantic         | 2.4+    | Data validation              |
 
 ### Installation Summary
 
@@ -56,6 +56,7 @@ nano .env.local
 ```
 
 Required variables:
+
 - `DATABASE_URL` - PostgreSQL connection string
 - `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase browser/API key
@@ -170,15 +171,6 @@ python -m pip install -r requirements.txt  # Install deps
 
 ## ⚠️ Known Issues & Warnings
 
-### Deprecated Packages
-
-```
-@clerk/types - Use @clerk/shared/types instead
-@clerk/clerk-react - Use @clerk/react instead
-```
-
-These are imported by dependencies and will be resolved in dependency updates.
-
 ### Security Vulnerabilities
 
 ```
@@ -204,7 +196,7 @@ See `.env.example` for all available options:
 
 ```env
 # Database
-DATABASE_URL=postgresql://swimuser:swimpass@localhost:5432/swim_db
+DATABASE_URL=<local-postgres-connection-string>
 
 # Supabase Authentication
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co

@@ -18,6 +18,7 @@
     "test:cov": "jest --coverage",
     "db:migrate": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
+    "prisma:validate": "prisma validate --schema prisma/schema.prisma",
     "db:reset": "prisma migrate reset",
     "db:seed": "prisma db seed",
     "type-check": "tsc --noEmit"

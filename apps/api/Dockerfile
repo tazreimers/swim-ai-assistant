@@ -11,7 +11,7 @@ COPY apps/api ./apps/api
 COPY packages/shared ./packages/shared
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --prefix packages/shared && npm ci --prefix apps/api
 
 # Build shared package
 WORKDIR /app/packages/shared
@@ -35,6 +35,7 @@ COPY --from=builder /app/package.json /app/package-lock.json ./
 # Copy built application and dependencies
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/node_modules ./node_modules
+COPY --from=builder /app/apps/api/prisma ./apps/api/prisma
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \

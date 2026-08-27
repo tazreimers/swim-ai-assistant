@@ -1,10 +1,4 @@
-import {
-  AiReportStatus,
-  AiReportType,
-  ClubRole,
-  MembershipStatus,
-  Prisma,
-} from '@prisma/client';
+import { AiReportStatus, AiReportType, ClubRole, MembershipStatus, Prisma } from '@prisma/client';
 import {
   ForbiddenException,
   Injectable,
@@ -46,9 +40,7 @@ export class AiService {
     const athleteId = isCoach ? undefined : user.id;
     const reportType = athleteId ? AiReportType.ATHLETE : AiReportType.SESSION;
     const input = this.buildInput(session, athleteId);
-    const inputSummaryHash = createHash('sha256')
-      .update(JSON.stringify(input))
-      .digest('hex');
+    const inputSummaryHash = createHash('sha256').update(JSON.stringify(input)).digest('hex');
 
     const existing = await this.prisma.aiReport.findFirst({
       where: { sessionId, athleteId, reportType, inputSummaryHash },
@@ -90,9 +82,10 @@ export class AiService {
         where: { id: report.id },
         data: {
           status: AiReportStatus.FAILED,
-          errorCode: error instanceof Error && error.name === 'TimeoutError'
-            ? 'AI_TIMEOUT'
-            : 'AI_PROVIDER_UNAVAILABLE',
+          errorCode:
+            error instanceof Error && error.name === 'TimeoutError'
+              ? 'AI_TIMEOUT'
+              : 'AI_PROVIDER_UNAVAILABLE',
           retryCount: { increment: 1 },
         },
       });
@@ -180,8 +173,7 @@ export class AiService {
       membership?.status === MembershipStatus.ACTIVE &&
       (membership.role === ClubRole.OWNER || membership.role === ClubRole.COACH);
     const isAthlete =
-      membership?.status === MembershipStatus.ACTIVE &&
-      membership.role === ClubRole.ATHLETE;
+      membership?.status === MembershipStatus.ACTIVE && membership.role === ClubRole.ATHLETE;
     if (!isCoach && !isAthlete) {
       throw new ForbiddenException('You do not have access to this report');
     }
@@ -227,7 +219,7 @@ export class AiService {
       headers: {
         'Content-Type': 'application/json',
         ...(process.env.AI_SERVICE_TOKEN
-          ? { Authorization: `Bearer ${process.env.AI_SERVICE_TOKEN}` }
+          ? { Authorization: ['Bearer', process.env.AI_SERVICE_TOKEN].join(' ') }
           : {}),
       },
       body: JSON.stringify({ prompt_version: PROMPT_VERSION, ...input }),

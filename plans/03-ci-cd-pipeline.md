@@ -15,7 +15,7 @@ Establish automated testing, building, and deployment pipeline using GitHub Acti
 ## Deliverables
 - `.github/workflows/test.yml` - Lint, type-check, and unit tests
 - `.github/workflows/build.yml` - Docker image builds
-- `.github/workflows/deploy.yml` - Deployment to Railway/Vercel
+- `.github/workflows/deploy.yml` - Release hooks for managed containers and Vercel
 - Deployment configuration files for staging and production
 - GitHub Secrets configured (DATABASE_URL, API_KEYS, etc.)
 - Branch protection rules on main (require passing checks)

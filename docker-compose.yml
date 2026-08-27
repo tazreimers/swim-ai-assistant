@@ -10,11 +10,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-swimpass}
       POSTGRES_DB: ${DB_NAME:-swim_db}
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-swimuser}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-swimuser}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -28,7 +28,7 @@ services:
       dockerfile: apps/api/Dockerfile
     container_name: swim-api
     ports:
-      - "3001:3001"
+      - '3001:3001'
     environment:
       NODE_ENV: development
       DATABASE_URL: postgresql://${DB_USER:-swimuser}:${DB_PASSWORD:-swimpass}@postgres:5432/${DB_NAME:-swim_db}
@@ -39,6 +39,7 @@ services:
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       AI_SERVICE_URL: http://ai:8000
       AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
       PORT: 3001
     depends_on:
       postgres:
@@ -51,7 +52,13 @@ services:
     networks:
       - swim-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3001/health', (r) => { if (r.statusCode !== 200) process.exit(1); })",
+        ]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -64,7 +71,7 @@ services:
       dockerfile: apps/web/Dockerfile
     container_name: swim-web
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       NODE_ENV: development
       NEXT_PUBLIC_API_URL: http://localhost:3001
@@ -82,7 +89,13 @@ services:
     networks:
       - swim-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://localhost:3000', (r) => { if (r.statusCode >= 500) process.exit(1); })",
+        ]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -95,14 +108,16 @@ services:
       dockerfile: Dockerfile
     container_name: swim-ai
     ports:
-      - "8000:8000"
+      - '8000:8000'
     environment:
       ENVIRONMENT: development
       API_URL: http://api:3001
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN}
       AI_MODE: ${AI_MODE:-mock}
       OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     depends_on:
       - api
     volumes:
@@ -111,7 +126,13 @@ services:
     networks:
       - swim-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test:
+        [
+          'CMD',
+          'python',
+          '-c',
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')",
+        ]
       interval: 30s
       timeout: 3s
       retries: 3

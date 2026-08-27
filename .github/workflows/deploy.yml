@@ -1,4 +1,4 @@
-name: Deploy
+name: Release
 
 on:
   workflow_dispatch:
@@ -13,10 +13,11 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
-  deploy:
-    name: Deploy to ${{ inputs.environment }}
+  validate:
+    name: Validate release inputs
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
@@ -28,27 +29,125 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Railway CLI
-        run: npm install --global @railway/cli
+      - name: Install root dependencies
+        run: npm ci
 
-      - name: Deploy API and AI services to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-          test -n "$RAILWAY_TOKEN"
-          railway up --service api --detach
-          railway up --service ai --detach
+      - name: Validate Prisma schema
+        run: npm run validate:prisma
 
-      - name: Deploy web app to Vercel
+  images:
+    name: Build and publish ${{ matrix.name }} image
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    strategy:
+      matrix:
+        include:
+          - name: api
+            file: apps/api/Dockerfile
+            context: .
+          - name: web
+            file: apps/web/Dockerfile
+            context: .
+          - name: ai
+            file: apps/ai/Dockerfile
+            context: apps/ai
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          push: true
+          tags: ghcr.io/${{ github.repository }}/${{ matrix.name }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-services:
+    name: Deploy and verify API and AI
+    needs: images
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Log in to GHCR for migration image
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run migrations against the target database
         env:
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          API_IMAGE: ghcr.io/${{ github.repository }}/api:${{ github.sha }}
         run: |
-          test -n "$VERCEL_ORG_ID"
-          test -n "$VERCEL_PROJECT_ID"
-          test -n "$VERCEL_TOKEN"
-          npx vercel deploy apps/web --token "$VERCEL_TOKEN" --yes \
-            --scope "$VERCEL_ORG_ID" \
-            --build-env NEXT_PUBLIC_SUPABASE_URL="${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" \
-            --build-env NEXT_PUBLIC_SUPABASE_ANON_KEY="${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}"
+          test -n "$DATABASE_URL"
+          docker run --rm \
+            --workdir /app/apps/api \
+            --env DATABASE_URL \
+            "$API_IMAGE" \
+            /app/node_modules/.bin/prisma migrate deploy
+
+      - name: Deploy API container
+        env:
+          DEPLOY_HOOK: ${{ secrets.API_DEPLOY_HOOK }}
+        run: |
+          test -n "$DEPLOY_HOOK"
+          curl --fail --silent --show-error --retry 2 -X POST "$DEPLOY_HOOK"
+
+      - name: Deploy AI container
+        env:
+          DEPLOY_HOOK: ${{ secrets.AI_DEPLOY_HOOK }}
+        run: |
+          test -n "$DEPLOY_HOOK"
+          curl --fail --silent --show-error --retry 2 -X POST "$DEPLOY_HOOK"
+
+      - name: Wait for API health
+        env:
+          HEALTH_URL: ${{ secrets.API_HEALTH_URL }}
+        run: |
+          test -n "$HEALTH_URL"
+          curl --fail --silent --show-error --retry 12 --retry-delay 5 "$HEALTH_URL"
+
+      - name: Wait for AI health
+        env:
+          HEALTH_URL: ${{ secrets.AI_HEALTH_URL }}
+        run: |
+          test -n "$HEALTH_URL"
+          curl --fail --silent --show-error --retry 12 --retry-delay 5 "$HEALTH_URL"
+
+  deploy-web:
+    name: Deploy and verify web
+    needs: deploy-services
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Deploy web application
+        env:
+          DEPLOY_HOOK: ${{ secrets.WEB_DEPLOY_HOOK }}
+        run: |
+          test -n "$DEPLOY_HOOK"
+          curl --fail --silent --show-error --retry 2 -X POST "$DEPLOY_HOOK"
+
+      - name: Wait for web health
+        env:
+          HEALTH_URL: ${{ secrets.WEB_HEALTH_URL }}
+        run: |
+          test -n "$HEALTH_URL"
+          curl --fail --silent --show-error --retry 12 --retry-delay 5 "$HEALTH_URL"

@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   quality:
-    name: Lint, type-check, and test
+    name: Format, lint, type-check, test, and build
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -22,6 +22,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install root dependencies
+        run: npm ci
 
       - name: Cache npm downloads
         uses: actions/cache@v4
@@ -39,6 +47,12 @@ jobs:
 
       - name: Install web dependencies
         run: npm ci --prefix apps/web
+
+      - name: Install AI dependencies
+        run: python -m pip install -r apps/ai/requirements.txt pytest
+
+      - name: Check formatting
+        run: npm run format:check
 
       - name: Build shared package
         run: npm run build --prefix packages/shared
@@ -58,5 +72,17 @@ jobs:
       - name: Type-check web
         run: npm run type-check --prefix apps/web
 
+      - name: Validate Prisma schema
+        run: npm run validate:prisma
+
       - name: Run API tests
         run: npm test --prefix apps/api -- --runInBand --passWithNoTests
+
+      - name: Run AI tests
+        run: npm run test:ai
+
+      - name: Build web for production
+        run: npm run build --prefix apps/web
+
+      - name: Build API for production
+        run: npm run build --prefix apps/api

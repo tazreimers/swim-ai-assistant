@@ -2,6 +2,9 @@ import { existsSync, readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 
 const root = new URL('..', import.meta.url).pathname;
+const webEnvironmentFile = existsSync(`${root}apps/web/.env.local`)
+  ? `${root}apps/web/.env.local`
+  : `${root}.env.local`;
 const checks = [];
 
 function hasVariable(file, name) {
@@ -17,10 +20,15 @@ function check(name, passed, detail) {
 
 check(
   'Web Supabase environment',
-  hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_URL') &&
-    (hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_ANON_KEY') ||
-      hasVariable(`${root}apps/web/.env.local`, 'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY')),
-  'apps/web/.env.local contains the Supabase URL and anon or publishable key',
+  hasVariable(webEnvironmentFile, 'NEXT_PUBLIC_SUPABASE_URL') &&
+    (hasVariable(webEnvironmentFile, 'NEXT_PUBLIC_SUPABASE_ANON_KEY') ||
+      hasVariable(webEnvironmentFile, 'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY')),
+  `${webEnvironmentFile} contains the Supabase URL and anon or publishable key`,
+);
+check(
+  'Web API environment',
+  hasVariable(webEnvironmentFile, 'NEXT_PUBLIC_API_URL'),
+  `${webEnvironmentFile} contains NEXT_PUBLIC_API_URL`,
 );
 check(
   'API Supabase environment',
@@ -34,6 +42,12 @@ check(
   'apps/api/.env contains DATABASE_URL',
 );
 check(
+  'API service configuration',
+  hasVariable(`${root}apps/api/.env`, 'FRONTEND_URL') &&
+    hasVariable(`${root}apps/api/.env`, 'AI_SERVICE_URL'),
+  'apps/api/.env contains the allowed web origin and AI service URL',
+);
+check(
   'GitHub workflows',
   ['test.yml', 'build.yml', 'deploy.yml'].every((file) =>
     existsSync(`${root}.github/workflows/${file}`),
@@ -45,11 +59,7 @@ try {
   execFileSync('docker', ['info'], { stdio: 'ignore' });
   check('Docker daemon', true, 'Docker is available and running');
 } catch {
-  check(
-    'Docker daemon',
-    false,
-    'Start Docker Desktop before running database migrations',
-  );
+  check('Docker daemon', false, 'Start Docker Desktop before running database migrations');
 }
 
 const failures = checks.filter(({ passed }) => !passed);

@@ -61,13 +61,15 @@ API runs on `http://localhost:3001` in development.
 ## Environment Variables
 
 ```bash
-DATABASE_URL=postgresql://user:password@localhost:5432/swim_db
+DATABASE_URL=<local-postgres-connection-string>
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 SUPABASE_SESSION_PHOTOS_BUCKET=session-photos
 AI_SERVICE_URL=http://localhost:8000
 AI_SERVICE_TOKEN=
+FRONTEND_URL=http://localhost:3000
+LOG_LEVEL=info
 AI_MODE=mock
 OPENAI_MODEL=gpt-4o-mini
 OPENAI_API_KEY=
@@ -134,7 +136,9 @@ Core endpoints are protected by Supabase Auth JWT authentication:
 pnpm build
 ```
 
-Compiled output goes to `dist/`. Ready for deployment to Railway or similar Node.js hosting.
+Compiled output goes to `dist/`. Deploy as an independent managed container.
+Production operations and rollback procedures are in
+`docs/production-operations.md`.
 
 ## Testing
 

@@ -144,7 +144,7 @@ async def generate_insights(request: InsightRequest) -> InsightResponse:
     async with httpx.AsyncClient(timeout=20) as client:
         response = await client.post(
             "https://api.openai.com/v1/chat/completions",
-            headers={"Authorization": f"Bearer {api_key}"},
+            headers={'Authorization': 'Bearer ' + api_key},
             json=payload,
         )
         response.raise_for_status()

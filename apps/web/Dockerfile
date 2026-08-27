@@ -17,7 +17,7 @@ ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
 ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --prefix packages/shared && npm ci --prefix apps/web
 
 # Build shared package
 WORKDIR /app/packages/shared

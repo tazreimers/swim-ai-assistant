@@ -4,7 +4,7 @@
 Set up PostgreSQL database with Prisma ORM, migrations, and seeding for MVP schema.
 
 ## Scope (MVP Infrastructure)
-- PostgreSQL instance on Railway for production
+- Supabase PostgreSQL for production
 - Local PostgreSQL via Docker for development
 - Prisma schema for foundational entities (User, Coach, Athlete, Team, Workout, Session)
 - Prisma migrations system
@@ -22,7 +22,7 @@ Set up PostgreSQL database with Prisma ORM, migrations, and seeding for MVP sche
 - Seed script for development data
 - Database connection service in NestJS
 - TypeScript types exported from Prisma
-- Backup documentation for Railway PostgreSQL
+- Backup and restore documentation for Supabase PostgreSQL
 
 ## Success Criteria
 - `pnpm run db:migrate` runs migrations successfully

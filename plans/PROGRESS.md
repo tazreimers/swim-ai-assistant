@@ -1,6 +1,6 @@
 # Swim AI Progress
 
-**Last updated:** August 20, 2026  
+**Last updated:** August 27, 2026  
 **Repository:** `tazreimers/swim-ai-assistant`
 
 ## Completed MVP baseline
@@ -24,7 +24,7 @@
 
 | Plan | Status | Dependency | Outcome |
 |---|---|---|---|
-| 13. Production foundation and release verification | Planned — release blocker | 01–12 | Hosted, verified, observable MVP. |
+| 13. Production foundation and release verification | Repository work complete — external release blocker | 01–12 | CI-enforced, documented, observable release foundation; hosted verification remains manual. |
 | 14. AthleteOS360 profiles and support access | Planned | 13 | Club athlete profile and scoped support collaboration. |
 | 15. Calendar, season planning, and workout templates | Planned | 14 | Reusable coach planning. |
 | 16. Pool-deck operations, attendance, and announcements | Planned | 14 | Daily club operations. |
