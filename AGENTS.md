@@ -31,8 +31,8 @@ more specific file; the more specific instruction wins for that subtree.
   features.
 - Do not create generic `utils`, `helpers`, `components`, or `types` folders
   for one file. Keep one-use functions in the file that uses them.
-- Follow the nearest existing filename/import pattern. Use kebab-case names for
-  new non-framework files. Next.js route names and dynamic segments follow
+- Follow the nearest existing filename/import pattern. Use kebab-case for new
+  non-framework files. Next.js route names and dynamic segments follow
   framework conventions.
 - Controllers/routes validate and delegate; services own business rules;
   Prisma is accessed through services. Use a transaction for multi-row writes
@@ -93,13 +93,13 @@ Run the narrowest relevant checks after every change and report anything that
 cannot run. Before a pull request, run all checks affected by the change:
 
 ```bash
-pnpm --filter @swim/shared build
-pnpm --filter @swim/shared type-check
-pnpm --filter @swim/web lint
-pnpm --filter @swim/web type-check
-pnpm --filter @swim/api lint
-pnpm --filter @swim/api type-check
-pnpm --filter @swim/api test
+npm run build --prefix packages/shared
+npm run type-check --prefix packages/shared
+npm run lint --prefix apps/web
+npm run type-check --prefix apps/web
+npm run lint --prefix apps/api
+npm run type-check --prefix apps/api
+npm test --prefix apps/api -- --runInBand --passWithNoTests
 ```
 
 For AI-service changes, run `pytest` from `apps/ai` in its configured Python
@@ -111,3 +111,9 @@ Do not weaken lint/type-check/test rules, skip CI, commit generated build
 artifacts, or use auto-fix across unrelated files to make a check pass. A
 necessary rule exception must be local, documented, and covered by a test when
 it changes behavior.
+
+## Progress tracking
+
+`plans/PROGRESS.md` is the single source of truth for implementation status,
+completed work, blockers, and next steps. Read it before starting a task and
+update it when a plan materially changes.
